@@ -18,41 +18,41 @@ const execute = async (query) => {
     console.error(error.stack);
     return false;
   }
-  // finally {
-  //   await client.end();
-  // }
 }
 
 const products = `
   CREATE TABLE IF NOT EXISTS products (
-    product_id INT,
-    campus VARCHAR(10),
+    id INT,
     name VARCHAR(50),
     slogan VARCHAR(100),
     description VARCHAR(500),
     category VARCHAR(50),
     default_price VARCHAR(10),
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP,
-    PRIMARY KEY (product_id)
+    PRIMARY KEY (id)
     );`;
 
 const features = `
   CREATE TABLE IF NOT EXISTS features (
     id INT,
+    product_id INT,
     feature VARCHAR(50),
     value VARCHAR(50),
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    FOREIGN KEY (product_id)
+      REFERENCES products(id)
   );`;
 
 const styles = `
   CREATE TABLE IF NOT EXISTS styles (
-    style_id INT,
+    id INT,
+    product_id INT,
     name VARCHAR(50),
-    original_price VARCHAR(10),
     sale_price VARCHAR(10),
-    "default?" BOOLEAN,
-    PRIMARY KEY (style_id)
+    original_price VARCHAR(10),
+    "default_style" BOOLEAN,
+    PRIMARY KEY (id),
+    FOREIGN KEY (product_id)
+      REFERENCES products(id)
   );`;
 
 const style_ref = `
@@ -60,9 +60,10 @@ const style_ref = `
     product_id INT,
     style_id INT,
     FOREIGN KEY (product_id)
-      REFERENCES products(product_id),
+      REFERENCES products(id),
     FOREIGN KEY (style_id)
-      REFERENCES styles(style_id)
+      REFERENCES styles(id),
+    PRIMARY KEY (product_id, style_id)
   );`;
 
 const feature_ref = `
@@ -70,31 +71,32 @@ const feature_ref = `
     product_id INT,
     feature_id INT,
     FOREIGN KEY (product_id)
-      REFERENCES products(product_id),
+      REFERENCES products(id),
     FOREIGN KEY (feature_id)
-      REFERENCES features(id)
+      REFERENCES features(id),
+    PRIMARY KEY (product_id, feature_id)
   );`;
 
 const photos = `
   CREATE TABLE IF NOT EXISTS photos (
     id INT,
     style_id INT,
-    thumbnail_url VARCHAR(500),
-    url VARCHAR(500),
+    url TEXT,
+    thumbnail_url TEXT,
     PRIMARY KEY (id),
     FOREIGN KEY (style_id)
-      REFERENCES styles(style_id)
+      REFERENCES styles(id)
   );`;
 
 const skus = `
   CREATE TABLE IF NOT EXISTS skus (
-    sku_id INT,
+    id INT,
     style_id INT,
-    quantity INT,
     size VARCHAR(10),
-    PRIMARY KEY (sku_id),
+    quantity INT,
+    PRIMARY KEY (id),
     FOREIGN KEY (style_id)
-      REFERENCES styles(style_id)
+      REFERENCES styles(id)
   );`;
 
 
@@ -142,4 +144,5 @@ execute(products)
     client.end();
   });
 
-  module.exports = client;
+  module.exports = { client, execute };
+  // module.exports = execute;
