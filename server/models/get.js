@@ -58,34 +58,54 @@ module.exports = {
         let product_id = Number(query);
         let stylesObj = {
             product_id: product_id,
-            results: []
         }
         let queryStyle = {
             text: 'SELECT * FROM styles WHERE product_id = $1',
             values: [product_id]
         }
-        let queryPhotos = {
-            text: 'SELECT thumnail_url, url FROM photos WHERE style'
+
+        async function stylePhotos() {
+            try {
+                stylesObj.results.forEach(async (style) => {
+                    let queryPhotos = {
+                        text: 'SELECT thumbnail_url, url FROM photos WHERE id = $1',
+                        values: [style.id]
+                    }
+                    let querySkus = {
+                        text: 'SELECT id, quantity, size FROM skus WHERE style_id = $1',
+                        values: [style.id]
+                    }
+                    const photos = await pool.query(queryPhotos)
+                    style["photos"] = photos.rows;
+                    const skus = await pool.query(querySkus)
+                    style["skus"] = {}
+                    skus.rows.forEach(sku => {
+                        style["skus"][sku.id] = {
+                            quantity: sku.quantity,
+                            size: sku.size
+                        }
+                    })
+                    console.log('this is the styleObj: ',  stylesObj);
+                });
+            } catch (err) {
+                console.log(err);
+            }
         }
+
         await pool.connect().then((client) => {
             return client
             .query(queryStyle)
             .then(result => {
-                stylesObj.results.push(result.rows);
-                // for (var style in styleObj) {
-                //     style["photos"] = [];
-                // }
-                console.log('stylesObj: ', stylesObj);
-                // callback(null, stylesObj);
+                stylesObj["results"] = result.rows;
+                // console.log('stylesObj: ', stylesObj);
             })
             .then(async () => {
-                // for (var style in styleObj) {
-
-
-                // }
-                // const photos = await pool.query()
-                // console.log('styles obj: ', stylesObj);
+                stylePhotos();
+                callback(null, stylesObj);
             })
+            // .then(async () => {
+
+            // })
             .catch(err => {
                 client.release();
                 callback(err.stack, null);
