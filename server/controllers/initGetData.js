@@ -18,26 +18,11 @@ exports.getCurrentProductCardControl = (req, res) => {
     if (err) {
       res.status(500).send(false);
     } else {
-      console.log('got productObj from db to server', succ);
       res.status(200).send(succ);
     }
   })
 
-  // const options = {
-  //   method: 'GET',
-  //   url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${incomingParamProductId}`,
-  //   headers: { Authorization: process.env.AUTH_SECRET },
-  // };
 
-  // axios(options)
-  //   .then((result) => {
-  //     // console.log('this is the productCardControl data: ', result.data);
-  //     res.status(200).send(result.data)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //     res.status(500).send(err)
-  //   })
 }
 
 exports.getRelatedProductCardControl = (req, res) => {
@@ -64,19 +49,29 @@ exports.getProductStylesControl = (req, res) => {
 
   var incomingParamProductId = req.query.id;
 
-  const options = {
-    method: 'GET',
-    url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${incomingParamProductId}/styles`,
-    headers: { Authorization: process.env.AUTH_SECRET },
-  };
-  axios(options)
-    .then((result) => {
-      res.status(200).send(result.data)
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send(err)
-    })
+
+  models.getStyles(incomingParamProductId, (err, succ) => {
+    if (err) {
+      res.status(500).send(false);
+    } else {
+      console.log('got styleObj from db to server', succ);
+      res.status(200).send(succ);
+    }
+  })
+
+  // const options = {
+  //   method: 'GET',
+  //   url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${incomingParamProductId}/styles`,
+  //   headers: { Authorization: process.env.AUTH_SECRET },
+  // };
+  // axios(options)
+  //   .then((result) => {
+  //     res.status(200).send(result.data)
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.status(500).send(err)
+  //   })
 }
 
 exports.getProductRelatedControl = (req, res) => {

@@ -20,7 +20,6 @@ module.exports = {
     getProduct: async (query, callback) => {
         // console.log('this is the query: ', query);
         let product_id = Number(query);
-        console.log('this is the query: ', product_id);
         let productObj;
         let queryProduct = {
             text: 'SELECT * FROM products WHERE products.id = $1',
@@ -53,7 +52,32 @@ module.exports = {
                 callback(err.stack, null);
             });
         });
+    },
 
+    getStyles: async (query, callback) => {
+        let product_id = Number(query);
+        let stylesObj = {
+            product_id: product_id,
+            results: []
+        }
+        let queryStyle = {
+            text: 'SELECT * FROM styles WHERE product_id = $1',
+            values: [product_id]
+        }
+        await pool.connect().then((client) => {
+            return client
+            .query(queryStyle)
+            .then(result => {
+                // console.log('these are styles:', result.rows);
+                stylesObj.results.push(result.rows);
+                console.log('stylesObj: ', stylesObj);
+                // callback(null, stylesObj);
+            })
+            .catch(err => {
+                client.release();
+                callback(err.stack, null);
+            })
+        })
     }
 
 }

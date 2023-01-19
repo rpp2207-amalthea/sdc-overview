@@ -121,7 +121,6 @@ const App = () => {
     // INIT GET 1: GET Genral Data of target product
     axios.get(`/ipCurrent`, { params: { id: focusProductId } })
       .then(function (response) {
-        console.log('client side productObj:', response.data)
         setProductInfo(response.data);
         var generalProductInfo = response.data;
         var featuresArrayToChangeKey = generalProductInfo.features;
@@ -165,6 +164,8 @@ const App = () => {
     // INIT GET 2: GET Product Styles
     axios.get('/getProductStyles', { params: { id: focusProductId } })
       .then(function (response) {
+        console.log('these are the styles: ', response.data.results);
+
         setProductStyles(response.data.results);
         // Getting Photo URL of current Product and saving it
         var allStylesArray = response.data.results;
