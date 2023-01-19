@@ -36,16 +36,15 @@ module.exports = {
             .query(queryProduct)
             .then(result => {
                 productObj = result.rows[0];
+                productObj["features"] = [];
             })
             .then(async () => {
                 const features = await pool.query(queryFeatures)
-                // features.rows.forEach(feature => {
-                //     if (feature.value !== 'null') {
-
-                //     }
-                // })
-                productObj["features"] = features.rows;
-                // console.log('this is the productObj: ',productObj);
+                features.rows.forEach(feature => {
+                    if (feature.value !== 'null') {
+                        productObj["features"].push(feature);
+                    }
+                })
                 callback(null, productObj);
 
             })
@@ -58,6 +57,7 @@ module.exports = {
     }
 
 }
+
 
 
 
