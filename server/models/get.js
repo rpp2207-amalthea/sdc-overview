@@ -1,4 +1,3 @@
-const client = require('../../db/index.js');
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -22,27 +21,34 @@ module.exports = {
         // console.log('this is the query: ', query);
         let product_id = Number(query);
         console.log('this is the query: ', product_id);
-        // let queryProductID = `
-        // SELECT * FROM products
-        // JOIN features ON products.id = features.product_id
-        // WHERE products.id = ${product_id};`;
-        let queryProductID = {
-            text: 'SELECT * FROM products JOIN features ON products.id = features.product_id WHERE products.id = $1',
+        let productObj;
+        let queryProduct = {
+            text: 'SELECT * FROM products WHERE products.id = $1',
+            values: [product_id]
+        }
+        let queryFeatures = {
+            text: 'SELECT feature, value FROM features WHERE features.product_id = $1',
             values: [product_id]
         }
 
         await pool.connect().then((client) => {
             return client
-            .query(queryProductID)
+            .query(queryProduct)
             .then(result => {
-                console.log('success query: ', result.rows[0]);
-                callback(null, result.rows[0]);
+                productObj = result.rows;
+                console.log('this is the projectObj 1: ', productObj);
+                // callback(null, productObj);
+            })
+            .then(async () => {
+                const features = await pool.query(queryFeatures)
+                console.log('got features: ',features.rows);
             })
             .catch(err => {
                 client.release();
                 callback(err.stack, null);
             });
         });
+
     }
 
 }

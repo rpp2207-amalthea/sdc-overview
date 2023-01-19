@@ -14,11 +14,11 @@ exports.getCurrentProductCardControl = (req, res) => {
   // var incomingParamProductId = req.params.id;
   // console.log("🚀 ~ file: initGetData.js:7 ~ incomingParamProductId", incomingParamProductId)
 
-  models.getProduct(incomingParamProductId, (succ, err) => {
-    if (false) {
+  models.getProduct(incomingParamProductId, (err, succ) => {
+    if (err) {
       res.status(500).send(false);
     } else {
-      console.log('successful query:', succ);
+      console.log('got data from db to server', succ);
       res.status(200).send(succ);
     }
   })
