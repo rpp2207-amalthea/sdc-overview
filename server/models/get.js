@@ -64,14 +64,27 @@ module.exports = {
             text: 'SELECT * FROM styles WHERE product_id = $1',
             values: [product_id]
         }
+        let queryPhotos = {
+            text: 'SELECT thumnail_url, url FROM photos WHERE style'
+        }
         await pool.connect().then((client) => {
             return client
             .query(queryStyle)
             .then(result => {
-                // console.log('these are styles:', result.rows);
                 stylesObj.results.push(result.rows);
+                // for (var style in styleObj) {
+                //     style["photos"] = [];
+                // }
                 console.log('stylesObj: ', stylesObj);
                 // callback(null, stylesObj);
+            })
+            .then(async () => {
+                // for (var style in styleObj) {
+
+
+                // }
+                // const photos = await pool.query()
+                // console.log('styles obj: ', stylesObj);
             })
             .catch(err => {
                 client.release();
