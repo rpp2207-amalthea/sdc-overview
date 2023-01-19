@@ -35,13 +35,19 @@ module.exports = {
             return client
             .query(queryProduct)
             .then(result => {
-                productObj = result.rows;
-                console.log('this is the projectObj 1: ', productObj);
-                // callback(null, productObj);
+                productObj = result.rows[0];
             })
             .then(async () => {
                 const features = await pool.query(queryFeatures)
-                console.log('got features: ',features.rows);
+                // features.rows.forEach(feature => {
+                //     if (feature.value !== 'null') {
+
+                //     }
+                // })
+                productObj["features"] = features.rows;
+                // console.log('this is the productObj: ',productObj);
+                callback(null, productObj);
+
             })
             .catch(err => {
                 client.release();

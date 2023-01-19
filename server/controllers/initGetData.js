@@ -18,7 +18,7 @@ exports.getCurrentProductCardControl = (req, res) => {
     if (err) {
       res.status(500).send(false);
     } else {
-      console.log('got data from db to server', succ);
+      console.log('got productObj from db to server', succ);
       res.status(200).send(succ);
     }
   })

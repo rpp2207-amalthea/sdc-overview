@@ -121,6 +121,7 @@ const App = () => {
     // INIT GET 1: GET Genral Data of target product
     axios.get(`/ipCurrent`, { params: { id: focusProductId } })
       .then(function (response) {
+        console.log('client side productObj:', response.data)
         setProductInfo(response.data);
         var generalProductInfo = response.data;
         var featuresArrayToChangeKey = generalProductInfo.features;
