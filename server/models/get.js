@@ -60,23 +60,34 @@ module.exports = {
             product_id: product_id,
         }
         let queryStyle = {
-            text: 'SELECT * FROM styles WHERE product_id = $1',
+            text: 'SELECT id AS style_id, name, original_price, sale_price, default_style FROM styles WHERE product_id = $1',
             values: [product_id]
         }
 
-        async function stylePhotos() {
+        async function photos() {
             try {
                 stylesObj.results.forEach(async (style) => {
                     let queryPhotos = {
                         text: 'SELECT thumbnail_url, url FROM photos WHERE id = $1',
-                        values: [style.id]
-                    }
-                    let querySkus = {
-                        text: 'SELECT id, quantity, size FROM skus WHERE style_id = $1',
-                        values: [style.id]
+                        values: [style.style_id]
                     }
                     const photos = await pool.query(queryPhotos)
                     style["photos"] = photos.rows;
+                    // console.log('got photos:', style["photos"])
+                    return style;
+                });
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        async function skus() {
+            try {
+                stylesObj.results.forEach(async (style) => {
+                    let querySkus = {
+                        text: 'SELECT id, quantity, size FROM skus WHERE style_id = $1',
+                        values: [style.style_id]
+                    }
                     const skus = await pool.query(querySkus)
                     style["skus"] = {}
                     skus.rows.forEach(sku => {
@@ -84,33 +95,48 @@ module.exports = {
                             quantity: sku.quantity,
                             size: sku.size
                         }
+                        console.log('skus: ', style["skus"]);
                     })
-                    console.log('this is the styleObj: ',  stylesObj);
-                });
-            } catch (err) {
+                })
+            } catch(err) {
                 console.log(err);
             }
         }
 
-        await pool.connect().then((client) => {
-            return client
-            .query(queryStyle)
-            .then(result => {
-                stylesObj["results"] = result.rows;
-                // console.log('stylesObj: ', stylesObj);
-            })
-            .then(async () => {
-                stylePhotos();
-                callback(null, stylesObj);
-            })
-            // .then(async () => {
+        try {
+            const styles = await pool.query(queryStyle)
+            stylesObj["results"] = styles.rows;
+            photos();
+            skus();
+            return stylesObj;
+        } catch(err) {
+            console.log(err);
+        }
 
-            // })
-            .catch(err => {
-                client.release();
-                callback(err.stack, null);
-            })
-        })
+        // await pool.connect().then((client) => {
+        //     return client
+        //     // getPhotosSkus()
+        //     // .then(() => {
+        //     //     console.log('got stylesObj: ', stylesObj);
+        //     // })
+        //     .query(queryStyle)
+        //     .then(result => {
+        //         stylesObj["results"] = result.rows;
+        //     })
+        //     .then(async () => {
+        //         await photos();
+        //     })
+        //     .then(async () => {
+        //         await skus();
+        //     })
+        //     .then(async () => {
+        //         callback(null, stylesObj);
+        //     })
+        //     .catch(err => {
+        //         client.release();
+        //         callback(err.stack, null);
+        //     })
+        // })
     }
 
 }
