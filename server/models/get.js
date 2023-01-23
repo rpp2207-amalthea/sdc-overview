@@ -59,52 +59,43 @@ module.exports = {
         let stylesObj = {
             product_id: product_id,
         }
-        let queryStyle = {
-            // text: 'SELECT id AS style_id, name, original_price, sale_price, default_style FROM styles WHERE product_id = $1',
-            text: `SELECT json_build_object(
-                'product_id', (SELECT id FROM products WHERE products.id = $1),
-                'results', (SELECT json_agg(row_to_json(styles)) FROM styles WHERE styles.product_id = $1));`,
-            values: [product_id]
-        }
 
         async function stylesMeta() {
             try {
-                // console.log('current stylesObj: ', stylesObj)
-                for await (const style of stylesObj["results"]) {
-                    let queryPhotos = {
-                        text: 'SELECT thumbnail_url, url FROM photos WHERE photos.style_id = $1;',
-                        values: [style.id]
+                    let queryPhotoSkus = {
+                        text: `SELECT json_build_object(
+                            'style_id', id,
+                            'name', name,
+                            'original_price', original_price,
+                            'sale_price', sale_price,
+                            'default_style', default_style,
+                            'photos', (
+                                SELECT json_agg(
+                                    json_build_object(
+                                        'thumbnail_url', thumbnail_url,
+                                        'url', url
+                                    )
+                                ) FROM photos WHERE photos.style_id = styles.id
+                            )
+                        ) FROM styles WHERE styles.product_id = $1;`,
+                        values: [product_id]
                     }
-                    let querySkus = {
-                        text: 'SELECT id, quantity, size FROM skus WHERE style_id = $1',
-                        values: [style.id]
-                    }
-                    pool.query(queryPhotos)
-                    .then((photos) => {
-                        style["photos"] = photos.rows;
+                    pool.query(queryPhotoSkus)
+                    .then((photoSkus) => {
+                        console.log('got query: ', photoSkus.rows);
+                        // return photoSkus.rows.json_build_object;
                     })
-                    pool.query(querySkus)
-                    .then((skus) => {
-                        style["skus"] = {}
-                        skus.rows.forEach((sku) => {
-                            style["skus"][sku.id] = {
-                                quantity: sku.quantity,
-                                size: sku.size
-                            }
-                        })
-                        console.log('1. style: ', style);
-                    })
-                }
-                return
             } catch (err) {
                 console.log(err);
             }
         }
 
         try {
-            const allStyles = await pool.query(queryStyle)
-            stylesObj = allStyles.rows[0].json_build_object;
-            await stylesMeta();
+            // const allStyles = await pool.query(queryStyle)
+            // stylesObj = allStyles.rows[0].json_build_object;
+            const allStyles = await stylesMeta()
+            stylesObj["results"] = allStyles;
+            console.log('got all styles: ', allStyles);
         } catch(err) {
             console.log(err);
         } finally {
