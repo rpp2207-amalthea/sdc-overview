@@ -76,7 +76,16 @@ module.exports = {
                                         'url', url
                                     )
                                 ) FROM photos WHERE photos.style_id = styles.id
-                            )
+                            ),
+                            'skus', (
+                                SELECT json_object_agg (
+                                    skus.id, (
+                                        SELECT json_build_object(
+                                            'quantity', quantity,
+                                            'size', size
+                                        )
+                                    )
+                                ) FROM skus WHERE skus.style_id = styles.id)
                         ) FROM styles WHERE styles.product_id = $1;`,
                         values: [product_id]
                     }
