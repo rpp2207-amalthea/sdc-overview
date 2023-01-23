@@ -146,3 +146,13 @@ execute(products)
 
   module.exports = { client, execute };
   // module.exports = execute;
+
+// SELECT json_build_object(
+// 'product_id', (SELECT id FROM products WHERE products.id = 300),
+// 'results', (SELECT json_agg(row_to_json(styles)) FROM styles WHERE styles.product_id = 300));));
+
+SELECT json_build_object(
+'product_id', (SELECT id FROM products WHERE products.id = 300),
+'results', (SELECT json_agg(row_to_json(styles)) FROM (
+SELECT styles.id, styles.name, styles.original_price, styles.sale_price, styles.default_style
+) AS style FROM styles WHERE styles.product_id = 300));

@@ -60,83 +60,56 @@ module.exports = {
             product_id: product_id,
         }
         let queryStyle = {
-            text: 'SELECT id AS style_id, name, original_price, sale_price, default_style FROM styles WHERE product_id = $1',
+            // text: 'SELECT id AS style_id, name, original_price, sale_price, default_style FROM styles WHERE product_id = $1',
+            text: `SELECT json_build_object(
+                'product_id', (SELECT id FROM products WHERE products.id = $1),
+                'results', (SELECT json_agg(row_to_json(styles)) FROM styles WHERE styles.product_id = $1));`,
             values: [product_id]
         }
 
-        async function photos() {
+        async function stylesMeta() {
             try {
-                stylesObj.results.forEach(async (style) => {
+                // console.log('current stylesObj: ', stylesObj)
+                for await (const style of stylesObj["results"]) {
                     let queryPhotos = {
-                        text: 'SELECT thumbnail_url, url FROM photos WHERE id = $1',
-                        values: [style.style_id]
+                        text: 'SELECT thumbnail_url, url FROM photos WHERE photos.style_id = $1;',
+                        values: [style.id]
                     }
-                    const photos = await pool.query(queryPhotos)
-                    style["photos"] = photos.rows;
-                    // console.log('got photos:', style["photos"])
-                    return style;
-                });
+                    let querySkus = {
+                        text: 'SELECT id, quantity, size FROM skus WHERE style_id = $1',
+                        values: [style.id]
+                    }
+                    pool.query(queryPhotos)
+                    .then((photos) => {
+                        style["photos"] = photos.rows;
+                    })
+                    pool.query(querySkus)
+                    .then((skus) => {
+                        style["skus"] = {}
+                        skus.rows.forEach((sku) => {
+                            style["skus"][sku.id] = {
+                                quantity: sku.quantity,
+                                size: sku.size
+                            }
+                        })
+                        console.log('1. style: ', style);
+                    })
+                }
+                return
             } catch (err) {
                 console.log(err);
             }
         }
 
-        async function skus() {
-            try {
-                stylesObj.results.forEach(async (style) => {
-                    let querySkus = {
-                        text: 'SELECT id, quantity, size FROM skus WHERE style_id = $1',
-                        values: [style.style_id]
-                    }
-                    const skus = await pool.query(querySkus)
-                    style["skus"] = {}
-                    skus.rows.forEach(sku => {
-                        style["skus"][sku.id] = {
-                            quantity: sku.quantity,
-                            size: sku.size
-                        }
-                        console.log('skus: ', style["skus"]);
-                    })
-                })
-            } catch(err) {
-                console.log(err);
-            }
-        }
-
         try {
-            const styles = await pool.query(queryStyle)
-            stylesObj["results"] = styles.rows;
-            photos();
-            skus();
-            return stylesObj;
+            const allStyles = await pool.query(queryStyle)
+            stylesObj = allStyles.rows[0].json_build_object;
+            await stylesMeta();
         } catch(err) {
             console.log(err);
+        } finally {
+            return stylesObj;
         }
-
-        // await pool.connect().then((client) => {
-        //     return client
-        //     // getPhotosSkus()
-        //     // .then(() => {
-        //     //     console.log('got stylesObj: ', stylesObj);
-        //     // })
-        //     .query(queryStyle)
-        //     .then(result => {
-        //         stylesObj["results"] = result.rows;
-        //     })
-        //     .then(async () => {
-        //         await photos();
-        //     })
-        //     .then(async () => {
-        //         await skus();
-        //     })
-        //     .then(async () => {
-        //         callback(null, stylesObj);
-        //     })
-        //     .catch(err => {
-        //         client.release();
-        //         callback(err.stack, null);
-        //     })
-        // })
     }
 
 }
