@@ -49,18 +49,18 @@ exports.getProductStylesControl = async (req, res) => {
 
   var incomingParamProductId = req.query.id;
 
-  const styles = await models.getStyles(incomingParamProductId);
-  console.log('2. got styles: ', styles);
+  // const styles = await models.getStyles(incomingParamProductId);
+  // console.log('2. got styles: ', styles);
 
 
-  // models.getStyles(incomingParamProductId, (err, succ) => {
-  //   if (err) {
-  //     res.status(500).send(false);
-  //   } else {
-  //     console.log('got styleObj from db to server', succ);
-  //     // res.status(200).send(succ);
-  //   }
-  // })
+  models.getStyles(incomingParamProductId, (err, succ) => {
+    if (err) {
+      res.status(500).send(false);
+    } else {
+      console.log('got styleObj from db to server', succ);
+      // res.status(200).send(succ);
+    }
+  })
 
   // const options = {
   //   method: 'GET',
