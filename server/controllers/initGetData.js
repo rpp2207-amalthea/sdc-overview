@@ -49,8 +49,10 @@ exports.getProductStylesControl = async (req, res) => {
 
   var incomingParamProductId = req.query.id;
 
-  // const styles = await models.getStyles(incomingParamProductId);
-  // console.log('2. got styles: ', styles);
+  // await models.getStyles(incomingParamProductId)
+  // .then((results) => {
+  //   console.log('got styleObj: ', results);
+  // })
 
 
   models.getStyles(incomingParamProductId, (err, succ) => {
@@ -58,23 +60,10 @@ exports.getProductStylesControl = async (req, res) => {
       res.status(500).send(false);
     } else {
       console.log('got styleObj from db to server', succ);
-      // res.status(200).send(succ);
+      res.status(200).send(succ);
     }
   })
 
-  // const options = {
-  //   method: 'GET',
-  //   url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${incomingParamProductId}/styles`,
-  //   headers: { Authorization: process.env.AUTH_SECRET },
-  // };
-  // axios(options)
-  //   .then((result) => {
-  //     res.status(200).send(result.data)
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //     res.status(500).send(err)
-  //   })
 }
 
 exports.getProductRelatedControl = (req, res) => {
