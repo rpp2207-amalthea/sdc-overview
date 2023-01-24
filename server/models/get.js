@@ -100,43 +100,51 @@ module.exports = {
             product_id: product_id,
         }
         let styles = {
-            text: `SELECT json_build_object(
-            'style_id', id,
-            'name', name,
-            'original_price', original_price,
-            'sale_price', sale_price,
-            'default_style', default_style,
-            'photos', (
-                SELECT json_agg(
-                    json_build_object(
-                        'thumbnail_url', thumbnail_url,
-                        'url', url
-                    )
-                ) FROM photos WHERE photos.style_id = styles.id
-            ),
-            'skus', (
-                SELECT json_object_agg (
-                    skus.id, (
-                        SELECT json_build_object(
-                            'quantity', quantity,
-                            'size', size
+            text: `
+            SELECT json_build_object(
+                'product_id', (SELECT id FROM products WHERE products.id = $1),
+                'results', (
+                    SELECT json_agg (
+                        json_build_object(
+                        'style_id', id,
+                        'name', name,
+                        'original_price', original_price,
+                        'sale_price', sale_price,
+                        'default_style', default_style,
+                        'photos', (
+                            SELECT json_agg(
+                                json_build_object(
+                                    'thumbnail_url', thumbnail_url,
+                                    'url', url
+                                )
+                            ) FROM photos WHERE photos.style_id = styles.id
+                        ),
+                        'skus', (
+                            SELECT json_object_agg (
+                                skus.id, (
+                                    SELECT json_build_object(
+                                        'quantity', quantity,
+                                        'size', size
+                                    )
+                                )
+                            ) FROM skus WHERE skus.style_id = styles.id)
                         )
-                    )
-                ) FROM skus WHERE skus.style_id = styles.id)
-            ) FROM styles WHERE styles.product_id = $1;`,
+                    ) FROM styles WHERE styles.product_id = $1
+                )
+            ) as styles;`,
+
         values: [product_id]
         }
 
         await pool.query(styles)
         .then((results) => {
-            stylesObj["results"] = results.rows;
+            stylesObj = results.rows[0].styles;
         })
         .then(() => {
             callback(null, stylesObj);
         })
         .catch((err) => {
             callback(err.stack, null);
-            // console.error(err);
         });
 
     }
