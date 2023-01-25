@@ -22,20 +22,19 @@ exports.getCurrentProductCardControl = (req, res) => {
     }
   })
 
-
 }
 
 exports.getRelatedProductCardControl = (req, res) => {
 
   var incomingParamProductId = req.query.id;
 
-  // models.getProduct(incomingParamProductId, (err, succ) => {
-  //   if (err) {
-  //     res.status(500).send(false);
-  //   } else {
-  //     res.status(200).send(succ);
-  //   }
-  // })
+  models.getProduct(incomingParamProductId, (err, succ) => {
+    if (err) {
+      res.status(500).send(false);
+    } else {
+      res.status(200).send(succ);
+    }
+  })
 
   // const options = {
   //   method: 'GET',
@@ -75,8 +74,8 @@ exports.getProductRelatedControl = (req, res) => {
     if (err) {
       res.status(500).send(false);
     } else {
-      // console.log('got related products: ', succ);
-      // res.status(200).send(succ);
+      console.log('got related products: ', succ);
+      res.status(200).send(succ);
     }
   })
 

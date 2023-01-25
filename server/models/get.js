@@ -117,7 +117,23 @@ module.exports = {
     },
 
     getRelated: async function (query, callback) {
-        console.log('got query in Related Models: ', query);
+        let current_product_id = Number(query);
+        // console.log('got query in Related Models: ', current_product_id);
+        let queryRelated = {
+            text: `
+            SELECT related_product_id FROM related WHERE current_product_id = $1;
+            `,
+            values: [current_product_id]
+        }
+        pool.query(queryRelated)
+        .then(result => {
+            // console.log('got related product id: ', result.rows[0]);
+            let related_product_id = [result.rows[0].related_product_id];
+            callback(null, related_product_id)
+        })
+        .catch(err => {
+            callback(err.stack, null);
+        });
     }
 
 }
