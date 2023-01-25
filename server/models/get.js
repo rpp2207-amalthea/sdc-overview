@@ -101,6 +101,13 @@ module.exports = {
             stylesObj = results.rows[0].styles;
         })
         .then(() => {
+            stylesObj.results.forEach((style) => {
+                if (style.sale_price === 'null') {
+                    style.sale_price = null;
+                }
+            })
+        })
+        .then(() => {
             callback(null, stylesObj);
         })
         .catch((err) => {

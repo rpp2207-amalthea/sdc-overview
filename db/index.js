@@ -104,11 +104,7 @@ const related = `
     id INT,
     current_product_id INT,
     related_product_id INT,
-    PRIMARY KEY (id),
-    FOREIGN KEY (current_product_id)
-      REFERENCES products (id),
-    FOREIGN KEY (related_product_id)
-      REFERENCES products (id)
+    PRIMARY KEY (id)
   );`;
 
 
