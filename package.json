@@ -4,7 +4,7 @@
   "description": "shop for golden fans",
   "main": "index.js",
   "scripts": {
-    "test": "PORT=6666 nyc mocha ./__tests__/server-overview.tests.ks --exit",
+    "test": "PORT=6666 nyc mocha ./__tests__/server-overview.test.js --exit",
     "coverage": "jest --coverage",
     "review-test": "mocha ReviewTest.test.js --require global-jsdom/register --require @babel/register",
     "server-dev": "nodemon server/index.js",

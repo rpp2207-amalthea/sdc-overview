@@ -121,14 +121,14 @@ module.exports = {
         // console.log('got query in Related Models: ', current_product_id);
         let queryRelated = {
             text: `
-            SELECT related_product_id FROM related WHERE current_product_id = $1;
+            SELECT related_product_id AS related_id FROM related WHERE current_product_id = $1;
             `,
             values: [current_product_id]
         }
         pool.query(queryRelated)
         .then(result => {
             // console.log('got related product id: ', result.rows[0]);
-            let related_product_id = [result.rows[0].related_product_id];
+            let related_product_id = [result.rows[0].related_id];
             callback(null, related_product_id)
         })
         .catch(err => {
