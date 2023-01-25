@@ -54,46 +54,6 @@ module.exports = {
         });
     },
 
-    // stylesMeta: async (productID) => {
-    //     try {
-    //             let queryPhotoSkus = {
-    //                 text: `SELECT json_build_object(
-    //                     'style_id', id,
-    //                     'name', name,
-    //                     'original_price', original_price,
-    //                     'sale_price', sale_price,
-    //                     'default_style', default_style,
-    //                     'photos', (
-    //                         SELECT json_agg(
-    //                             json_build_object(
-    //                                 'thumbnail_url', thumbnail_url,
-    //                                 'url', url
-    //                             )
-    //                         ) FROM photos WHERE photos.style_id = styles.id
-    //                     ),
-    //                     'skus', (
-    //                         SELECT json_object_agg (
-    //                             skus.id, (
-    //                                 SELECT json_build_object(
-    //                                     'quantity', quantity,
-    //                                     'size', size
-    //                                 )
-    //                             )
-    //                         ) FROM skus WHERE skus.style_id = styles.id)
-    //                 ) FROM styles WHERE styles.product_id = $1;`,
-    //                 values: [productID]
-    //             }
-    //             pool.query(queryPhotoSkus)
-    //             .then((photoSkus) => {
-    //                 console.log('got query: ', photoSkus.rows)
-    //                 return photoSkus.rows;
-    //             })
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // },
-
-
     getStyles: async function (query, callback) {
         let product_id = Number(query);
         let stylesObj = {
@@ -147,6 +107,10 @@ module.exports = {
             callback(err.stack, null);
         });
 
+    },
+
+    getRelated: async function (query, callback) {
+        console.log('got query in Related Models: ', query);
     }
 
 }

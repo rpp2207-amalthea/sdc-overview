@@ -29,37 +29,38 @@ exports.getRelatedProductCardControl = (req, res) => {
 
   var incomingParamProductId = req.query.id;
 
-  const options = {
-    method: 'GET',
-    url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${incomingParamProductId}`,
-    headers: { Authorization: process.env.AUTH_SECRET },
-  };
+  // models.getProduct(incomingParamProductId, (err, succ) => {
+  //   if (err) {
+  //     res.status(500).send(false);
+  //   } else {
+  //     res.status(200).send(succ);
+  //   }
+  // })
 
-  axios(options)
-    .then((result) => {
-      res.status(200).send(result.data)
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send(err)
-    })
+  // const options = {
+  //   method: 'GET',
+  //   url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/products/${incomingParamProductId}`,
+  //   headers: { Authorization: process.env.AUTH_SECRET },
+  // };
+
+  // axios(options)
+  //   .then((result) => {
+  //     res.status(200).send(result.data)
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.status(500).send(err)
+  //   })
 }
 
 exports.getProductStylesControl = async (req, res) => {
 
   var incomingParamProductId = req.query.id;
 
-  // await models.getStyles(incomingParamProductId)
-  // .then((results) => {
-  //   console.log('got styleObj: ', results);
-  // })
-
-
   models.getStyles(incomingParamProductId, (err, succ) => {
     if (err) {
       res.status(500).send(false);
     } else {
-      console.log('got styleObj from db to server', succ);
       res.status(200).send(succ);
     }
   })
@@ -68,7 +69,16 @@ exports.getProductStylesControl = async (req, res) => {
 
 exports.getProductRelatedControl = (req, res) => {
 
-  // var incomingParamProductId = req.query.id;
+  var incomingParamProductId = req.query.id;
+
+    models.getRelated(incomingParamProductId, (err, succ) => {
+    if (err) {
+      res.status(500).send(false);
+    } else {
+      // console.log('got related products: ', succ);
+      // res.status(200).send(succ);
+    }
+  })
 
   // const options = {
   //   method: 'GET',

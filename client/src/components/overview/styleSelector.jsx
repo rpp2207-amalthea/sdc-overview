@@ -7,7 +7,7 @@ const StyleSelector = (props) => {
 
   return (
     <div widgetname="Overview"  data-testid='testStyleSelector'  className="styleSelector">
-      {!props.styles[props.styleIndex]?.sale_price ? <p>${props.styles[props.styleIndex]?.original_price}</p>
+      {!props.styles[props.styleIndex]?.sale_price? <p>${props.styles[props.styleIndex]?.original_price}</p>
         :
         <p widgetname="Overview"><span widgetname="Overview" className="strikeThrough"> ${props.styles[props.styleIndex]?.original_price} </span> ${props.styles[props.styleIndex]?.sale_price}</p>
       }

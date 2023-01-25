@@ -99,6 +99,18 @@ const skus = `
       REFERENCES styles(id)
   );`;
 
+const related = `
+  CREATE TABLE IF NOT EXISTS related (
+    id INT,
+    current_product_id INT,
+    related_product_id INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (current_product_id)
+      REFERENCES products (id),
+    FOREIGN KEY (related_product_id)
+      REFERENCES products (id)
+  );`;
+
 
 execute(products)
   .then(result => {
@@ -141,18 +153,14 @@ execute(products)
     if (result) {
       console.log('SKUS table created');
     }
+    // client.end();
+    return execute(related);
+  })
+  .then(result => {
+    if (result) {
+      console.log('Related table created');
+    }
     client.end();
-  });
+  })
 
   module.exports = { client, execute };
-  // module.exports = execute;
-
-// SELECT json_build_object(
-// 'product_id', (SELECT id FROM products WHERE products.id = 300),
-// 'results', (SELECT json_agg(row_to_json(styles)) FROM styles WHERE styles.product_id = 300));));
-
-SELECT json_build_object(
-'product_id', (SELECT id FROM products WHERE products.id = 300),
-'results', (SELECT json_agg(row_to_json(styles)) FROM (
-SELECT styles.id, styles.name, styles.original_price, styles.sale_price, styles.default_style
-) AS style FROM styles WHERE styles.product_id = 300));
