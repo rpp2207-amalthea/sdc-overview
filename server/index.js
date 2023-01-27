@@ -21,7 +21,7 @@ app.use(compression())
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/ip/:id', express.static(__dirname + '/../client/dist'));
-app.listen(3000, () => console.log('Our Server is listening on port 3000...'));
+// app.listen(3000, () => console.log('Our Server is listening on port 3000...'));
 
 // ROUTES
 
@@ -70,3 +70,12 @@ app.put('/helpfulAnswer', putData.answerHelpfulness);
 
 app.put('/reportAnswer', putData.answerReported);
 
+
+//INTEGRATION TESTING ROUTES
+app.get('/redirect', initGetData.redirectFromHome)
+app.get('/getProductModelTest', initGetData.getCurrentProductCardControl);
+app.get('/getProductStyleTest', initGetData.getProductStylesControl);
+app.get('/getRelatedProductIdTest', initGetData.getProductRelatedControl);
+
+
+module.exports = app.listen(3000, () => console.log('Our server is listening on port 3000...'))

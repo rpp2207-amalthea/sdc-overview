@@ -8,7 +8,7 @@ import ExpandedView from './expandedView.jsx'
 const Spinner = require('../../img/spiffygif_46x46.gif');
 
 const Overview = (props) => {
-  // console.log('overview', props.info);
+
   const [styleIndex, setStyleIndex] = useState(0);
   const setIndex = (index) => {
     // console.log(index);

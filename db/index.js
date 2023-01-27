@@ -107,6 +107,15 @@ const related = `
     PRIMARY KEY (id)
   );`;
 
+const cart =  `
+  CREATE TABLE IF NOT EXISTS cart (
+  id INT,
+  user_session INT,
+  product_id INT,
+  active BOOLEAN,
+  PRIMARY KEY (id)
+  );`;
+
 
 execute(products)
   .then(result => {
@@ -155,6 +164,12 @@ execute(products)
   .then(result => {
     if (result) {
       console.log('Related table created');
+    }
+    return execute(cart);
+  })
+  .then(result => {
+    if(result) {
+      console.log('Cart table created');
     }
     client.end();
   })
