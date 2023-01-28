@@ -5,6 +5,8 @@ const express = require ("express");
 const axios = require ('axios')
 const app = express();
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
+const { uuid } = require('uuidv4');
 const initGetData = require("./controllers/initGetData.js");
 const postData = require('./controllers/postData.js');
 const putData = require('./controllers/putData.js');
@@ -15,6 +17,7 @@ const upload = multer({ dest: 'uploads/' });
 const deleteData = require('./controllers/deleteData.js');
 const compression = require('compression');
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors()); // Not sure if needed
 app.use(compression())

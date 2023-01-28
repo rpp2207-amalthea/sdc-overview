@@ -1,5 +1,8 @@
 const axios = require('axios')
 const models = require('../models/get.js');
+const modelPost = require('../models/post.js');
+// const cookieParser = require('cookie-parser');
+const { v4: uuidv4 } = require('uuid');
 
 exports.redirectFromHome = (req, res) => {
 
@@ -10,10 +13,10 @@ exports.redirectFromHome = (req, res) => {
 
 exports.getCurrentProductCardControl = (req, res) => {
 
-  // var incomingParamProductId = req.query.id;
+  var incomingParamProductId = req.query.id;
 
   //testing variable
-  var incomingParamProductId = req.body.id;
+  // var incomingParamProductId = req.body.id;
 
   // var incomingParamProductId = req.params.id;
   // console.log("🚀 ~ file: initGetData.js:7 ~ incomingParamProductId", incomingParamProductId)
@@ -45,9 +48,10 @@ exports.getRelatedProductCardControl = (req, res) => {
 
 exports.getProductStylesControl = async (req, res) => {
 
-  // var incomingParamProductId = req.query.id;
+  var incomingParamProductId = req.query.id;
 
-  var incomingParamProductId = req.body.id;
+  //testing variable
+  // var incomingParamProductId = req.body.id;
 
 
   models.getStyles(incomingParamProductId, (err, succ) => {
@@ -63,9 +67,10 @@ exports.getProductStylesControl = async (req, res) => {
 
 exports.getProductRelatedControl = (req, res) => {
 
-  // var incomingParamProductId = req.query.id;
+  var incomingParamProductId = req.query.id;
 
-  var incomingParamProductId = req.body.id;
+  //testing variable
+  // var incomingParamProductId = req.body.id;
 
     models.getRelated(incomingParamProductId, (err, succ) => {
     if (err) {
@@ -135,17 +140,31 @@ exports.getProductQnAControl = (req, res) => {
   })
 }
 exports.getCart = (req, res) => {
-  const options = {
-    method: 'GET',
-    url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/cart`,
-    headers: { Authorization: process.env.AUTH_SECRET },
-  };
-  axios(options)
-  .then((result) => {
-    res.status(200).send(result.query)
-  })
-  .catch((err) => {
-    console.log(err);
-    res.status(500).send(err)
-  })
+
+  if (!req.cookies["session_id"]) {
+    const session_id = uuidv4();
+    // console.log('what is session id: ', session_id);
+    modelPost.postSessionID(session_id, (err, succ) => {
+      if(err) {
+        res.status(500).send(err);
+      } else {
+        res.cookie('session_id',session_id).send();
+      }
+    })
+  }
+
+
+  // const options = {
+  //   method: 'GET',
+  //   url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/cart`,
+  //   headers: { Authorization: process.env.AUTH_SECRET },
+  // };
+  // axios(options)
+  // .then((result) => {
+  //   res.status(200).send(result.query)
+  // })
+  // .catch((err) => {
+  //   console.log(err);
+  //   res.status(500).send(err)
+  // })
 }

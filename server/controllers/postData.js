@@ -1,6 +1,7 @@
 const axios = require('axios');
 const cloudinary = require('../cloudinary');
 const uploader = require('../multer');
+const { uuid } = require('uuidv4');
 
 exports.postReviewForm = (req, res) => {
 
@@ -127,5 +128,12 @@ exports.postAddToCart = (req, res) => {
     console.log('failure in the api add to cart: ', error);
     res.status(500).send(error);
   });
+}
+
+exports.createSession = (req, res) => {
+  const session_id = uuid();
+
+  console.log('what is the session id: ', session_id);
+
 }
 

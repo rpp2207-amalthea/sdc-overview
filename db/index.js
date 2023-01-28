@@ -109,11 +109,10 @@ const related = `
 
 const cart =  `
   CREATE TABLE IF NOT EXISTS cart (
-  id INT,
-  user_session INT,
+  id SERIAL PRIMARY KEY,
+  user_session TEXT,
   product_id INT,
-  active BOOLEAN,
-  PRIMARY KEY (id)
+  active BOOLEAN
   );`;
 
 
