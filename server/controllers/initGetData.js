@@ -157,23 +157,10 @@ exports.getCart = (req, res) => {
       if(err) {
         res.status(500).send(err);
       } else {
-        res.status(200).send(succ);
+        let cart = succ;
+        res.status(200).send(cart);
       }
     })
   }
 
-
-  // const options = {
-  //   method: 'GET',
-  //   url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/cart`,
-  //   headers: { Authorization: process.env.AUTH_SECRET },
-  // };
-  // axios(options)
-  // .then((result) => {
-  //   res.status(200).send(result.query)
-  // })
-  // .catch((err) => {
-  //   console.log(err);
-  //   res.status(500).send(err)
-  // })
 }

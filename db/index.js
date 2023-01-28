@@ -111,7 +111,7 @@ const cart =  `
   CREATE TABLE IF NOT EXISTS cart (
   id SERIAL PRIMARY KEY,
   user_session TEXT,
-  product_id INT,
+  sku_id INT,
   active BOOLEAN
   );`;
 

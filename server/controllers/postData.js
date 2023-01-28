@@ -1,7 +1,8 @@
 const axios = require('axios');
 const cloudinary = require('../cloudinary');
 const uploader = require('../multer');
-const { uuid } = require('uuidv4');
+const cookieParser = require('cookie-parser');
+const model = require('../models/post.js');
 
 exports.postReviewForm = (req, res) => {
 
@@ -109,31 +110,22 @@ exports.postImg = (req, res) => {
 
 exports.postAddToCart = (req, res) => {
 
-  var cartData = req.body.params;
-
-  var options = {
-    url: 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/cart',
-    method: 'POST',
-    headers: { Authorization: process.env.AUTH_SECRET },
-    "Content-Type": 'application/json',
-    data: cartData
-  };
-
-  axios(options)
-  .then((results) => {
-    var cartSuccess = JSON.parse(JSON.stringify(results.data));
-    res.status(201).send(cartSuccess);
+  let sku_id = req.body.params.sku_id;
+  let session_id = req.cookies.session_id;
+  let cart = {
+    session_id: session_id,
+    sku_id: sku_id
+  }
+  model.addToCart(cart, (err, succ) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      // console.log('added to cart');
+      res.status(201).send(succ.rowCount);
+    }
   })
-  .catch((error) => {
-    console.log('failure in the api add to cart: ', error);
-    res.status(500).send(error);
-  });
-}
-
-exports.createSession = (req, res) => {
-  const session_id = uuid();
-
-  console.log('what is the session id: ', session_id);
 
 }
+
+
 

@@ -139,12 +139,12 @@ module.exports = {
     getCart: async function(query, callback) {
         let existing_session_id = query;
         let queryCart = {
-            text: `SELECT COUNT(product_id) FROM cart WHERE user_session = $1;`,
+            text: `SELECT sku_id FROM cart WHERE user_session = $1;`,
             values: [existing_session_id]
         }
         await pool.query(queryCart)
             .then(result => {
-                let itemCount = result.rows[0].count;
+                let itemCount = result.rows;
                 callback(null, itemCount);
             })
             .catch(err => {
