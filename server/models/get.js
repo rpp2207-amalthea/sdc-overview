@@ -134,6 +134,23 @@ module.exports = {
         .catch(err => {
             callback(err.stack, null);
         });
+    },
+
+    getCart: async function(query, callback) {
+        let existing_session_id = query;
+        let queryCart = {
+            text: `SELECT COUNT(product_id) FROM cart WHERE user_session = $1;`,
+            values: [existing_session_id]
+        }
+        await pool.query(queryCart)
+            .then(result => {
+                let itemCount = result.rows[0].count;
+                callback(null, itemCount);
+            })
+            .catch(err => {
+                callback(err.stack, null);
+            })
+
     }
 
 }

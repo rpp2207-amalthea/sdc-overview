@@ -3,7 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const CartForm = (props) => {
-
+  console.log('cart props: ', props);
   const handleDelete = (event) => {
     event.preventDefault();
 

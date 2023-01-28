@@ -1,7 +1,7 @@
 const axios = require('axios')
 const models = require('../models/get.js');
 const modelPost = require('../models/post.js');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const { v4: uuidv4 } = require('uuid');
 
 exports.redirectFromHome = (req, res) => {
@@ -149,6 +149,15 @@ exports.getCart = (req, res) => {
         res.status(500).send(err);
       } else {
         res.cookie('session_id',session_id).send();
+      }
+    })
+  } else {
+    const existing_session_id = req.cookies.session_id;
+    models.getCart(existing_session_id, (err, succ) => {
+      if(err) {
+        res.status(500).send(err);
+      } else {
+        res.status(200).send(succ);
       }
     })
   }
