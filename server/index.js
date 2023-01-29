@@ -79,6 +79,8 @@ app.get('/redirect', initGetData.redirectFromHome)
 app.get('/getProductModelTest', initGetData.getCurrentProductCardControl);
 app.get('/getProductStyleTest', initGetData.getProductStylesControl);
 app.get('/getRelatedProductIdTest', initGetData.getProductRelatedControl);
-
+app.get('/getCartTest', initGetData.getCart);
+app.post('/postCartTest', postData.postAddToCart);
+app.delete('/deleteCartTest', deleteData.deleteCart);
 
 module.exports = app.listen(3000, () => console.log('Our server is listening on port 3000...'))

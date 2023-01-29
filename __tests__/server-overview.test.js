@@ -34,6 +34,7 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
     await client.query(`CREATE TEMPORARY TABLE photos (LIKE photos INCLUDING ALL)`);
     await client.query(`CREATE TEMPORARY TABLE skus (LIKE skus INCLUDING ALL)`);
     await client.query(`CREATE TEMPORARY TABLE related (LIKE related INCLUDING ALL)`);
+    await client.query(`CREATE TEMPORARY TABLE cart (LIKE cart INCLUDING ALL)`);
   })
 
   beforeEach('Insert sample data before each test', async function () {
@@ -80,6 +81,13 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
       current_product_id: 71697,
       related_product_id: 3000
     }
+    const cart = {
+      id: 1,
+      user_session: '12345',
+      sku_id: 1234
+    }
+
+
     await client.query(`INSERT INTO pg_temp.products(id, name, slogan, description, category, default_price)
                         VALUES ($1, $2, $3, $4, $5, $6)`, [product_data.id, product_data.name, product_data.slogan, product_data.description, product_data.category, product_data.default_price]);
     await client.query(`INSERT INTO pg_temp.features(id, product_id, feature, value)
@@ -94,6 +102,8 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
                         VALUES ($1, $2, $3, $4)`, [1, skus.style_id, skus.size, skus.quantity]);
     await client.query(`INSERT INTO pg_temp.related(id, current_product_id, related_product_id)
                         VALUES ($1, $2, $3)`, [related.id, related.current_product_id, related.related_product_id]);
+    await client.query(`INSERT INTO pg_temp.cart(id, user_session, sku_id)
+                        VALUES ($1, $2, $3)`, [cart.id, cart.user_session, cart.sku_id]);
 
   })
 
@@ -106,6 +116,7 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
     await client.query('DROP TABLE IF EXISTS pg_temp.photos');
     await client.query('DROP TABLE IF EXISTS pg_temp.skus');
     await client.query('DROP TABLE IF EXISTS pg_temp.related');
+    await client.query('DROP TABLE IF EXISTS pg_temp.cart');
   })
 
   describe('PRODUCT DETAILS Integration Tests', function () {
@@ -183,9 +194,8 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
     })
   })
 
-  // //write test for related
   describe('RELATED PRODUCT Integration Test', function () {
-    it('Querying RELEATED PRODUCT should return correct values from DB', async function () {
+    it('Querying RELATED PRODUCT should return correct values from DB', async function () {
       const current_product_id = 71697;
       const related = {
         id: 1,
@@ -196,6 +206,21 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
 
       expect(rows[0].related_product_id).to.equal(related.related_product_id);
     })
+  })
+
+  describe('CART Integration Test', function () {
+    it('Querying CART should return correct values from DB', async function () {
+      const cart = {
+        id: 1,
+        user_session: '12345',
+        sku_id: 1234
+      }
+
+      const { rows } = await client.query(`SELECT sku_id FROM cart WHERE user_session = $1`, [cart.user_session])
+
+      expect(rows[0].sku_id).to.deep.equal(cart.sku_id);
+    })
+
   })
 
   // //write test for routers
@@ -250,6 +275,27 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
     })
   })
 
+  describe('GET CART Router Test', function () {
+    it('returns status 200', async function () {
+      await getCart()
+    })
+
+    it('returns status 204 with delete cart item', async function () {
+      const cart = {
+        id: 1,
+        user_session: '26e92a67-862f-4922-abe1-82eeb9effa9d',
+        sku_id: 1234
+      }
+      // await client.query(`CREATE TEMPORARY TABLE cart (LIKE cart INCLUDING ALL)`);
+      // await client.query(`INSERT INTO pg_temp.cart(user_session, sku_id)
+      // VALUES ($1, $2)`, [cart.session_id, cart.sku_id]);
+
+      await deleteCart(cart)
+    })
+
+  })
+
+
   const redirect = async (status = 302) => {
     const { body } = await request(app)
       .get('/redirect')
@@ -276,6 +322,30 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
   const getRelated = async (req, status = 200) => {
     const { body } = await request(app)
       .get('/getRelatedProductIdTest')
+      .send(req)
+      .expect(status)
+    return body;
+  }
+
+  const getCart = async (req, status = 200) => {
+    const { body } = await request(app)
+      .get('/getCartTest')
+      .send(req)
+      .expect(status)
+    return body;
+  }
+
+  const postCart = async (req, status = 200) => {
+    const { body } = await request(app)
+      .get('/postCartTest')
+      .send(req)
+      .expect(status)
+    return body;
+  }
+
+  const deleteCart = async (req, status = 204) => {
+    const { body } = await request(app)
+      .get('/deleteCartTest')
       .send(req)
       .expect(status)
     return body;

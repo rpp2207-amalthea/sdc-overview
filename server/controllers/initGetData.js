@@ -139,6 +139,8 @@ exports.getProductQnAControl = (req, res) => {
     res.status(500).send(err)
   })
 }
+
+
 exports.getCart = (req, res) => {
 
   if (!req.cookies["session_id"]) {

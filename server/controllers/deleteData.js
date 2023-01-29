@@ -9,7 +9,7 @@ exports.deleteCart = (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      console.log('deleted cart!', succ);
+      // console.log('deleted cart!', succ);
       res.status(204).send(succ);
     }
   })
