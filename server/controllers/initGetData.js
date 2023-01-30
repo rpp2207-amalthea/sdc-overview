@@ -145,7 +145,7 @@ exports.getCart = (req, res) => {
 
   if (!req.cookies["session_id"]) {
     const session_id = uuidv4();
-    // console.log('what is session id: ', session_id);
+
     modelPost.postSessionID(session_id, (err, succ) => {
       if(err) {
         res.status(500).send(err);
