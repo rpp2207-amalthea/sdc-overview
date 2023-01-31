@@ -3,7 +3,8 @@ const cookieParser = require('cookie-parser');
 const model = require('../models/delete.js');
 
 exports.deleteCart = (req, res) => {
-  let session_id = req.cookies.session_id;
+  let session_id = req.query.session_id;
+  console.log("🚀 ~ file: deleteData.js:7 ~ exports.deleteCart ~ session_id", session_id)
 
   model.deleteCart(session_id, (err, succ) => {
     if (err) {

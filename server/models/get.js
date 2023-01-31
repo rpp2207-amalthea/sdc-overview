@@ -137,11 +137,14 @@ module.exports = {
     },
 
     getCart: async function(query, callback) {
+    // console.log("🚀 ~ file: get.js:140 ~ getCart:function ~ query", query)
+
         let existing_session_id = query;
         let queryCart = {
             text: `SELECT sku_id FROM cart WHERE user_session = $1;`,
             values: [existing_session_id]
         }
+
         await pool.query(queryCart)
             .then(result => {
                 let itemCount = result.rows;

@@ -38,7 +38,7 @@ module.exports = {
   },
 
   addToCart: async (query, callback) => {
-    console.log('got query: ', query);
+    console.log('got add to cart query: ', query);
     let cart = query;
     let insertCartQuery = {
       text: `INSERT INTO cart(user_session, sku_id) VALUES($1, $2);`,
@@ -53,4 +53,5 @@ module.exports = {
         callback(err.stack, null);
       })
   }
+
 }

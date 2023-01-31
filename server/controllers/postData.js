@@ -109,9 +109,10 @@ exports.postImg = (req, res) => {
 }
 
 exports.postAddToCart = (req, res) => {
+// console.log("🚀 ~ file: postData.js:112 ~ req", req.body)
 
-  let sku_id = req.body.params.sku_id;
-  let session_id = req.cookies.session_id;
+  let sku_id = req.body.cartData.sku_id;
+  let session_id = req.body.session_id;
   let cart = {
     session_id: session_id,
     sku_id: sku_id
@@ -120,7 +121,7 @@ exports.postAddToCart = (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      // console.log('added to cart');
+      console.log('added to cart', succ);
       res.status(201).send(succ.rowCount);
     }
   })

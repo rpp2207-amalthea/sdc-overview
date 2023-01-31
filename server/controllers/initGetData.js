@@ -13,13 +13,13 @@ exports.redirectFromHome = (req, res) => {
 
 exports.getCurrentProductCardControl = (req, res) => {
 
-  var incomingParamProductId = req.query.id;
+  var incomingParamProductId = req.query.product_id;
+  // console.log("🚀 ~ file: initGetData.js:17 ~ incomingParamProductId", typeof incomingParamProductId)
 
   //testing variable
   // var incomingParamProductId = req.body.id;
 
   // var incomingParamProductId = req.params.id;
-  // console.log("🚀 ~ file: initGetData.js:7 ~ incomingParamProductId", incomingParamProductId)
 
   models.getProduct(incomingParamProductId, (err, succ) => {
     if (err) {
@@ -34,7 +34,8 @@ exports.getCurrentProductCardControl = (req, res) => {
 
 exports.getRelatedProductCardControl = (req, res) => {
 
-  var incomingParamProductId = req.query.id;
+  var incomingParamProductId = req.query.product_id;
+  // console.log("🚀 ~ file: initGetData.js:38 ~ incomingParamProductId", incomingParamProductId)
 
   models.getProduct(incomingParamProductId, (err, succ) => {
     if (err) {
@@ -48,7 +49,7 @@ exports.getRelatedProductCardControl = (req, res) => {
 
 exports.getProductStylesControl = async (req, res) => {
 
-  var incomingParamProductId = req.query.id;
+  var incomingParamProductId = req.query.product_id;
 
   //testing variable
   // var incomingParamProductId = req.body.id;
@@ -67,7 +68,7 @@ exports.getProductStylesControl = async (req, res) => {
 
 exports.getProductRelatedControl = (req, res) => {
 
-  var incomingParamProductId = req.query.id;
+  var incomingParamProductId = req.query.product_id;
 
   //testing variable
   // var incomingParamProductId = req.body.id;
@@ -142,25 +143,30 @@ exports.getProductQnAControl = (req, res) => {
 
 
 exports.getCart = (req, res) => {
+// console.log("🚀 ~ file: initGetData.js:147 ~ req", req.query.session_id)
 
-  if (!req.cookies["session_id"]) {
+  if (!req.query.session_id) {
     const session_id = uuidv4();
 
     modelPost.postSessionID(session_id, (err, succ) => {
       if(err) {
         res.status(500).send(err);
       } else {
-        res.cookie('session_id',session_id).send();
+        console.log('successful session created created')
+        res.cookie('session_id', session_id);
+        console.log('cookie is set')
+        res.send();
       }
     })
   } else {
-    const existing_session_id = req.cookies.session_id;
+    const existing_session_id = req.query.session_id;
+
     models.getCart(existing_session_id, (err, succ) => {
       if(err) {
         res.status(500).send(err);
       } else {
-        let cart = succ;
-        res.status(200).send(cart);
+        let cart = JSON.stringify(succ);
+        res.status(200).send(JSON.stringify(cart));
       }
     })
   }

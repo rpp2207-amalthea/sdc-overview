@@ -4,8 +4,8 @@ require('dotenv').config();
 const express = require ("express");
 const axios = require ('axios')
 const app = express();
-const cors = require("cors");
 const cookieParser = require('cookie-parser');
+const cors = require("cors");
 const { uuid } = require('uuidv4');
 const initGetData = require("./controllers/initGetData.js");
 const postData = require('./controllers/postData.js');
@@ -83,4 +83,4 @@ app.get('/getCartTest', initGetData.getCart);
 app.post('/postCartTest', postData.postAddToCart);
 app.delete('/deleteCartTest', deleteData.deleteCart);
 
-module.exports = app.listen(3000, () => console.log('Our server is listening on port 3000...'))
+module.exports = app.listen(8080, () => console.log('Our server is listening on port 8080...'))
