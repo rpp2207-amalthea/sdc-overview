@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 
 exports.redirectFromHome = (req, res) => {
 
-  res.redirect('/ip/71704')
+  res.redirect('/ip/71700')
 
 }
 
@@ -14,12 +14,10 @@ exports.redirectFromHome = (req, res) => {
 exports.getCurrentProductCardControl = (req, res) => {
 
   var incomingParamProductId = req.query.product_id;
-  // console.log("🚀 ~ file: initGetData.js:17 ~ incomingParamProductId", typeof incomingParamProductId)
+
 
   //testing variable
   // var incomingParamProductId = req.body.id;
-
-  // var incomingParamProductId = req.params.id;
 
   models.getProduct(incomingParamProductId, (err, succ) => {
     if (err) {
@@ -83,63 +81,6 @@ exports.getProductRelatedControl = (req, res) => {
   })
 
 };
-
-exports.getProductReviewsControl = (req, res) => {
-
-  var incomingParamProductId = req.query.id;
-
-  const options = {
-    method: 'GET',
-    url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/reviews?product_id=${incomingParamProductId}`,
-    headers: { Authorization: process.env.AUTH_SECRET },
-  };
-  axios(options)
-    .then((result) => {
-      res.status(200).send(result.data)
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send(err)
-    })
-};
-
-exports.getProductReviewMeta = (req, res) => {
-  var incomingParamProductId = req.query.id;
-  const options = {
-    method: 'GET',
-    url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/reviews/meta?product_id=${incomingParamProductId}`,
-    // params: { product_id: incomingParamProductId },
-    headers: { Authorization: process.env.AUTH_SECRET }
-  };
-  axios(options)
-    .then((result) => {
-      res.status(200).send(result.data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send(err);
-    });
-};
-
-
-exports.getProductQnAControl = (req, res) => {
-
-  var incomingParamProductId = req.query.id;
-
-  const options = {
-    method: 'GET',
-    url: `https://app-hrsei-api.herokuapp.com/api/fec2/hr-rpp/qa/questions?product_id=${incomingParamProductId}`,
-    headers: { Authorization: process.env.AUTH_SECRET },
-  };
-  axios(options)
-  .then((result) => {
-    res.status(200).send(result.data)
-  })
-  .catch((err) => {
-    console.log(err);
-    res.status(500).send(err)
-  })
-}
 
 
 exports.getCart = (req, res) => {

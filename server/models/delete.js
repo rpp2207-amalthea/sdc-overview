@@ -17,7 +17,6 @@ pool.on('error', (err, client) => {
 
 module.exports = {
   deleteCart: async (query, callback) => {
-    // console.log('got delete query: ', query);
     let session_id = query;
     let deleteQuery = {
       text: `DELETE FROM cart WHERE user_session = $1`,

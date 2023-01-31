@@ -9,7 +9,7 @@ const cors = require("cors");
 const { uuid } = require('uuidv4');
 const initGetData = require("./controllers/initGetData.js");
 const postData = require('./controllers/postData.js');
-const putData = require('./controllers/putData.js');
+// const putData = require('./controllers/putData.js');
 //for image uploads
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' });
@@ -31,7 +31,6 @@ app.use('/ip/:id', express.static(__dirname + '/../client/dist'));
 app.get('/', initGetData.redirectFromHome);
 
 app.get('/ipCurrent', initGetData.getCurrentProductCardControl);
-// app.get('/ip/:id', initGetData.getCurrentProductCardControl);
 
 app.get('/ipRelated', initGetData.getRelatedProductCardControl);
 
@@ -39,39 +38,11 @@ app.get('/getProductStyles', initGetData.getProductStylesControl);
 
 app.get('/getProductRelated', initGetData.getProductRelatedControl);
 
-app.get('/getProductReviews', initGetData.getProductReviewsControl);
-
-app.get('/getProductReviewMeta', initGetData.getProductReviewMeta);
-
-app.get('/getProductQnA', initGetData.getProductQnAControl);
-
-app.post('/uploadImg', upload.any(), postData.postImg);
-
 app.get('/getCart', initGetData.getCart);
-
-app.post('/submitReview', postData.postReviewForm);
-
-app.post('/submitQuestion', postData.postQuestionForm);
-
-app.post('/submitAnswer', postData.postAnswerForm);
-
-app.post('/clickTrackPost', postData.postClickTrack);
 
 app.post('/addToCart', postData.postAddToCart);
 
 app.delete('/deleteCart', deleteData.deleteCart);
-
-app.put('/helpClick', putData.putHelpClick);
-
-app.put('/reportClick', putData.putReportClick);
-
-app.put('/helpfulQuestion', putData.questionHelpfulness);
-
-app.put('/reportedQuestion', putData.questionReported);
-
-app.put('/helpfulAnswer', putData.answerHelpfulness);
-
-app.put('/reportAnswer', putData.answerReported);
 
 
 //INTEGRATION TESTING ROUTES

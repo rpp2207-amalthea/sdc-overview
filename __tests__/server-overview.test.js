@@ -83,7 +83,7 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
     }
     const cart = {
       id: 1,
-      user_session: '12345',
+      session_id: '12345',
       sku_id: 1234
     }
 
@@ -103,7 +103,7 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
     await client.query(`INSERT INTO pg_temp.related(id, current_product_id, related_product_id)
                         VALUES ($1, $2, $3)`, [related.id, related.current_product_id, related.related_product_id]);
     await client.query(`INSERT INTO pg_temp.cart(id, user_session, sku_id)
-                        VALUES ($1, $2, $3)`, [cart.id, cart.user_session, cart.sku_id]);
+                        VALUES ($1, $2, $3)`, [cart.id, cart.session_id, cart.sku_id]);
 
   })
 
@@ -211,13 +211,16 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
   describe('CART Integration Test', function () {
     it('Querying CART should return correct values from DB', async function () {
       const cart = {
-        id: 1,
-        user_session: '12345',
+        id: 2,
+        session_id: '12345',
         sku_id: 1234
       }
+      // await client.query(`CREATE TEMPORARY TABLE cart (LIKE cart INCLUDING ALL)`);
+      // await client.query(`INSERT INTO pg_temp.cart(id, user_session, sku_id)
+      // VALUES ($1, $2, $3)`, [cart.id, cart.session_id, cart.sku_id]);
 
-      const { rows } = await client.query(`SELECT sku_id FROM cart WHERE user_session = $1`, [cart.user_session])
-
+      const { rows } = await client.query(`SELECT sku_id FROM cart WHERE user_session = $1`, [cart.session_id])
+      await deleteCart(cart.session_id)
       expect(rows[0].sku_id).to.deep.equal(cart.sku_id);
     })
 
@@ -280,17 +283,12 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
       await getCart()
     })
 
-    it('returns status 204 with delete cart item', async function () {
-      const cart = {
-        id: 1,
-        user_session: '26e92a67-862f-4922-abe1-82eeb9effa9d',
-        sku_id: 1234
-      }
-      // await client.query(`CREATE TEMPORARY TABLE cart (LIKE cart INCLUDING ALL)`);
-      // await client.query(`INSERT INTO pg_temp.cart(user_session, sku_id)
-      // VALUES ($1, $2)`, [cart.session_id, cart.sku_id]);
+  })
 
-      await deleteCart(cart)
+  describe('POST CART Router Test', function () {
+    it('returns status 204', async function () {
+      const req = {id: '71697'};
+      await postCart(req)
     })
 
   })
