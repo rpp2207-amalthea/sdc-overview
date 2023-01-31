@@ -55,28 +55,6 @@ const styles = `
       REFERENCES products(id)
   );`;
 
-const style_ref = `
-  CREATE TABLE IF NOT EXISTS style_ref (
-    product_id INT,
-    style_id INT,
-    FOREIGN KEY (product_id)
-      REFERENCES products(id),
-    FOREIGN KEY (style_id)
-      REFERENCES styles(id),
-    PRIMARY KEY (product_id, style_id)
-  );`;
-
-const feature_ref = `
-  CREATE TABLE IF NOT EXISTS feature_ref (
-    product_id INT,
-    feature_id INT,
-    FOREIGN KEY (product_id)
-      REFERENCES products(id),
-    FOREIGN KEY (feature_id)
-      REFERENCES features(id),
-    PRIMARY KEY (product_id, feature_id)
-  );`;
-
 const photos = `
   CREATE TABLE IF NOT EXISTS photos (
     id INT,
@@ -133,18 +111,6 @@ execute(products)
     if (result) {
       console.log('Styles table created');
     }
-    return execute(style_ref);
-  })
-  .then(result => {
-    if (result) {
-      console.log('Style Ref table created');
-    }
-    return execute(feature_ref);
-  })
-  .then(result => {
-    if (result) {
-      console.log('Feature Ref table created');
-    }
     return execute(photos);
   })
   .then(result => {
@@ -157,7 +123,6 @@ execute(products)
     if (result) {
       console.log('SKUS table created');
     }
-    // client.end();
     return execute(related);
   })
   .then(result => {
