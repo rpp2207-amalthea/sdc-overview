@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 
 exports.redirectFromHome = (req, res) => {
 
-  res.redirect('/ip/71700')
+  res.redirect('/ip/71706')
 
 }
 
@@ -93,9 +93,9 @@ exports.getCart = (req, res) => {
       if(err) {
         res.status(500).send(err);
       } else {
-        console.log('successful session created created')
+        // console.log('successful session created created')
         res.cookie('session_id', session_id);
-        console.log('cookie is set')
+        // console.log('cookie is set')
         res.send();
       }
     })

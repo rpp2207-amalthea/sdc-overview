@@ -215,12 +215,8 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
         session_id: '12345',
         sku_id: 1234
       }
-      // await client.query(`CREATE TEMPORARY TABLE cart (LIKE cart INCLUDING ALL)`);
-      // await client.query(`INSERT INTO pg_temp.cart(id, user_session, sku_id)
-      // VALUES ($1, $2, $3)`, [cart.id, cart.session_id, cart.sku_id]);
 
       const { rows } = await client.query(`SELECT sku_id FROM cart WHERE user_session = $1`, [cart.session_id])
-      await deleteCart(cart.session_id)
       expect(rows[0].sku_id).to.deep.equal(cart.sku_id);
     })
 
@@ -286,12 +282,28 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
   })
 
   describe('POST CART Router Test', function () {
-    it('returns status 204', async function () {
-      const req = {id: '71697'};
-      await postCart(req)
+    it('returns status 201', async function () {
+      const cart = {
+        id: 2,
+        session_id: '12345',
+        sku_id: 1234
+      }
+      await postCart(cart)
     })
 
   })
+  describe('DELETE CART Router Test', function () {
+    it('returns status 204', async function () {
+      const cart = {
+        id: 2,
+        session_id: '12345',
+        sku_id: 1234
+      }
+      await deleteCart(cart)
+    })
+
+  })
+
 
 
   const redirect = async (status = 302) => {
@@ -333,9 +345,9 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
     return body;
   }
 
-  const postCart = async (req, status = 200) => {
+  const postCart = async (req, status = 201) => {
     const { body } = await request(app)
-      .get('/postCartTest')
+      .post('/postCartTest')
       .send(req)
       .expect(status)
     return body;
@@ -343,7 +355,7 @@ describe('PRODUCT OVERVIEW ROUTE', function () {
 
   const deleteCart = async (req, status = 204) => {
     const { body } = await request(app)
-      .get('/deleteCartTest')
+      .delete('/deleteCartTest')
       .send(req)
       .expect(status)
     return body;

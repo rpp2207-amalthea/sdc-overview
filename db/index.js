@@ -97,43 +97,43 @@ const cart =  `
 execute(products)
   .then(result => {
     if (result) {
-      console.log('Products table created');
+      // console.log('Products table created');
     }
     return execute(features);
   })
   .then(result => {
     if (result) {
-      console.log('Features table created');
+      // console.log('Features table created');
     }
     return execute(styles);
   })
   .then(result => {
     if (result) {
-      console.log('Styles table created');
+      // console.log('Styles table created');
     }
     return execute(photos);
   })
   .then(result => {
     if (result) {
-      console.log('Photos table created');
+      // console.log('Photos table created');
     }
     return execute(skus);
   })
   .then(result => {
     if (result) {
-      console.log('SKUS table created');
+      // console.log('SKUS table created');
     }
     return execute(related);
   })
   .then(result => {
     if (result) {
-      console.log('Related table created');
+      // console.log('Related table created');
     }
     return execute(cart);
   })
   .then(result => {
     if(result) {
-      console.log('Cart table created');
+      // console.log('Cart table created');
     }
     client.end();
   })

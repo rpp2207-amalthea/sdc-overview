@@ -19,6 +19,8 @@ exports.postAddToCart = (req, res) => {
     session_id: session_id,
     sku_id: sku_id
   }
+  // console.log("🚀 ~ file: postData.js:22 ~ req", req.body)
+
   model.addToCart(cart, (err, succ) => {
     if (err) {
       res.status(500).send(err);

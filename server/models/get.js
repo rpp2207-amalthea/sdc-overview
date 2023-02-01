@@ -23,6 +23,22 @@ module.exports = {
         let productObj;
         let queryProduct = {
             text: 'SELECT * FROM products WHERE products.id = $1',
+            // text: `SELECT json_build_object(
+            //     'id', id,
+            //     'name', name,
+            //     'slogan', slogan,
+            //     'description', description,
+            //     'category', category,
+            //     'default_price', default_price,
+            //     'features', (
+            //         SELECT json_agg(
+            //             json_build_object(
+            //                 'feature', feature,
+            //                 'value', value
+            //             )
+            //         ) FROM features WHERE features.product_id = $1
+            //     )
+            // ) FROM products WHERE products.id = $1;`,
             values: [product_id]
         }
         let queryFeatures = {
@@ -39,13 +55,19 @@ module.exports = {
             })
             .then(async () => {
                 const features = await pool.query(queryFeatures)
+                // console.log('what are features', features.rows);
+
                 features.rows.forEach(feature => {
                     if (feature.value !== 'null') {
                         productObj["features"].push(feature);
                     }
                 })
+                // for await (const feature of features.rows) {
+                //     if (feature.value !== 'null') {
+                //         productObj["features"].push(feature);
+                //     }
+                // }
                 callback(null, productObj);
-
             })
             .catch(err => {
                 client.release();
