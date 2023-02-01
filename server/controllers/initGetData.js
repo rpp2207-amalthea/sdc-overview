@@ -14,6 +14,7 @@ exports.redirectFromHome = (req, res) => {
 exports.getCurrentProductCardControl = (req, res) => {
 
   var incomingParamProductId = req.query.product_id;
+  // console.log("🚀 ~ file: initGetData.js:17 ~ incomingParamProductId", incomingParamProductId)
 
 
   //testing variable
@@ -23,7 +24,7 @@ exports.getCurrentProductCardControl = (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      // console.log('current product: ', succ);
+      console.log('current product: ', succ);
       res.status(200).send(succ);
     }
   })

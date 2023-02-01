@@ -22,46 +22,47 @@ module.exports = {
         let product_id = Number(query);
         let productObj;
         let queryProduct = {
-            text: 'SELECT * FROM products WHERE products.id = $1',
-            // text: `SELECT json_build_object(
-            //     'id', id,
-            //     'name', name,
-            //     'slogan', slogan,
-            //     'description', description,
-            //     'category', category,
-            //     'default_price', default_price,
-            //     'features', (
-            //         SELECT json_agg(
-            //             json_build_object(
-            //                 'feature', feature,
-            //                 'value', value
-            //             )
-            //         ) FROM features WHERE features.product_id = $1
-            //     )
-            // ) FROM products WHERE products.id = $1;`,
+            // text: 'SELECT * FROM products WHERE products.id = $1',
+            text: `SELECT json_build_object(
+                'id', id,
+                'name', name,
+                'slogan', slogan,
+                'description', description,
+                'category', category,
+                'default_price', default_price,
+                'features', (
+                    SELECT json_agg(
+                        json_build_object(
+                            'feature', feature,
+                            'value', value
+                        )
+                    ) FROM features WHERE features.product_id = $1
+                )
+            ) FROM products WHERE products.id = $1;`,
             values: [product_id]
         }
-        let queryFeatures = {
-            text: 'SELECT feature, value FROM features WHERE features.product_id = $1',
-            values: [product_id]
-        }
-
+        // let queryFeatures = {
+        //     text: 'SELECT feature, value FROM features WHERE features.product_id = $1',
+        //     values: [product_id]
+        // }
+        // console.log('about to query');
         await pool.connect().then((client) => {
             return client
             .query(queryProduct)
             .then(result => {
-                productObj = result.rows[0];
-                productObj["features"] = [];
+                // console.log('what are results: ', result.rows[0]);
+                productObj = result.rows[0].json_build_object;
+                // productObj["features"] = [];
             })
             .then(async () => {
-                const features = await pool.query(queryFeatures)
+                // const features = await pool.query(queryFeatures)
                 // console.log('what are features', features.rows);
 
-                features.rows.forEach(feature => {
-                    if (feature.value !== 'null') {
-                        productObj["features"].push(feature);
-                    }
-                })
+                // features.rows.forEach(feature => {
+                //     if (feature.value !== 'null') {
+                //         productObj["features"].push(feature);
+                //     }
+                // })
                 // for await (const feature of features.rows) {
                 //     if (feature.value !== 'null') {
                 //         productObj["features"].push(feature);

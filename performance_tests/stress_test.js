@@ -4,11 +4,11 @@ import { sleep } from 'k6';
 export let options = {
   insecureSkipTLSVerify: true,
   noConnectionReuse: false,
-  vus: 1,
-  duration: '10s'
+  vus: 1000,
+  duration: '60s'
 };
 
 export default () => {
-  http.get('http://localhost:3000/ip/71700/')
+  http.get('http://localhost:8080/ipCurrent?product_id=100')
   sleep(1);
 };
