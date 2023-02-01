@@ -24,7 +24,7 @@ exports.getCurrentProductCardControl = (req, res) => {
     if (err) {
       res.status(500).send(err);
     } else {
-      console.log('current product: ', succ);
+      // console.log('current product: ', succ);
       res.status(200).send(succ);
     }
   })
