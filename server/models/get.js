@@ -6,7 +6,7 @@ const pool = new Pool({
     "database": 'sdc',
     "password": '',
     "port": 5432,
-    "max": 20,
+    "max": 50,
     "connectionTimeoutMillis": 0,
     "idleTimeoutMillis": 0
 });
@@ -45,6 +45,11 @@ module.exports = {
             .query(queryProduct)
             .then(result => {
                 productObj = result.rows[0].json_build_object;
+                productObj.features.forEach(feature => {
+                    if (feature.value === 'null') {
+                        feature.value = null;
+                    }
+                })
                 callback(null, productObj);
             })
             .catch(err => {

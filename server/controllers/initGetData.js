@@ -85,10 +85,12 @@ exports.getProductRelatedControl = (req, res) => {
 
 
 exports.getCart = (req, res) => {
-// console.log("🚀 ~ file: initGetData.js:147 ~ req", req.query.session_id)
+// console.log("🚀 ~ file: initGetData.js:88 ~ req", req.query.session_id)
 
   if (!req.query.session_id) {
     const session_id = uuidv4();
+
+    // console.log("🚀 ~ file: initGetData.js:92 ~ session_id", session_id)
 
     modelPost.postSessionID(session_id, (err, succ) => {
       if(err) {

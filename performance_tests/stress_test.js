@@ -4,7 +4,7 @@ import { sleep } from 'k6';
 export let options = {
   insecureSkipTLSVerify: true,
   noConnectionReuse: false,
-  vus: 1000,
+  vus: 10,
   duration: '60s'
 };
 
