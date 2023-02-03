@@ -8,7 +8,7 @@ const pool = new Pool({
     "port": 5432,
     "max": 50,
     "connectionTimeoutMillis": 0,
-    "idleTimeoutMillis": 0
+    "idleTimeoutMillis": 10000
 });
 pool.on('error', (err, client) => {
     console.error('Unexpected error on idle client', err)

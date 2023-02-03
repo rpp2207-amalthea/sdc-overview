@@ -1,0 +1,19 @@
+version: '4.16.2'
+services:
+  sdc-overview:
+    build: .
+    container_name: sdc_overview_c
+    ports:
+      - '8080:8080'
+    volumes:
+      - ../sdc_overview:/sdc-overview
+      - /sdc_overview/node_modules
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres-0
+    volumes:
+      - ./data:/var/lib/postgresql/data
