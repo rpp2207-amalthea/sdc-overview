@@ -6,8 +6,8 @@ const pool = new Pool({
     "database": 'sdc',
     "password": '',
     "port": 5432,
-    "max": 50,
-    "connectionTimeoutMillis": 0,
+    "max": 1000,
+    "connectionTimeoutMillis": 10000,
     "idleTimeoutMillis": 10000
 });
 pool.on('error', (err, client) => {
@@ -40,9 +40,7 @@ module.exports = {
             ) FROM products WHERE products.id = $1;`,
             values: [product_id]
         }
-        await pool.connect().then((client) => {
-            return client
-            .query(queryProduct)
+        await pool.query(queryProduct)
             .then(result => {
                 productObj = result.rows[0].json_build_object;
                 productObj.features.forEach(feature => {
@@ -53,10 +51,8 @@ module.exports = {
                 callback(null, productObj);
             })
             .catch(err => {
-                client.release();
                 callback(err.stack, null);
             });
-        });
     },
 
     getStyles: async function (query, callback) {
