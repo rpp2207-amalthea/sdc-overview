@@ -1,15 +1,27 @@
 const { Pool } = require('pg');
 
+// const pool = new Pool({
+//     "host": '127.0.0.1',
+//     "user": 'tivo',
+//     "database": 'sdc',
+//     "password": '',
+//     "port": 5432,
+//     "max": 1000,
+//     "connectionTimeoutMillis": 10000,
+//     "idleTimeoutMillis": 10000
+// });
+
 const pool = new Pool({
     "host": '127.0.0.1',
-    "user": 'tivo',
-    "database": 'sdc',
-    "password": '',
+    "user": 'postgres',
+    "database": 'product_overview',
+    "password": 'password',
     "port": 5432,
     "max": 1000,
     "connectionTimeoutMillis": 10000,
     "idleTimeoutMillis": 10000
 });
+
 pool.on('error', (err, client) => {
     console.error('Unexpected error on idle client', err)
     process.exit(-1)
@@ -102,11 +114,14 @@ module.exports = {
             stylesObj = results.rows[0].styles;
         })
         .then(() => {
-            stylesObj.results.forEach((style) => {
-                if (style.sale_price === 'null') {
-                    style.sale_price = null;
-                }
-            })
+            // console.log("🚀 ~ file: get.js:103 ~ .then ~ stylesObj", stylesObj)
+            if (stylesObj.results) {
+                stylesObj.results.forEach((style) => {
+                    if (style.sale_price === 'null') {
+                        style.sale_price = null;
+                    }
+                })
+            }
         })
         .then(() => {
             callback(null, stylesObj);

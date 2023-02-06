@@ -8,12 +8,12 @@ const model = require('../models/post.js');
 exports.postAddToCart = (req, res) => {
 // console.log("🚀 ~ file: postData.js:112 ~ req", req.body)
 
-  let sku_id = req.body.cartData.sku_id;
-  let session_id = req.body.session_id;
+  // let sku_id = req.body.cartData.sku_id;
+  // let session_id = req.body.session_id;
 
   //testing variables
-  // let sku_id = req.body.sku_id;
-  // let session_id = req.body.session_id;
+  let sku_id = req.body.sku_id;
+  let session_id = req.body.session_id;
 
   let cart = {
     session_id: session_id,

@@ -93,6 +93,14 @@ const cart =  `
   active BOOLEAN
   );`;
 
+const testCart = `
+CREATE TABLE IF NOT EXISTS testCart (
+  id SERIAL PRIMARY KEY,
+  user_session TEXT,
+  sku_id INT,
+  active BOOLEAN
+  );`;
+
 
 execute(products)
   .then(result => {
@@ -134,6 +142,13 @@ execute(products)
   .then(result => {
     if(result) {
       // console.log('Cart table created');
+    }
+    return execute(testCart);
+    // client.end();
+  })
+  .then(result => {
+    if(result) {
+      console.log('Test Cart Table created')
     }
     client.end();
   })

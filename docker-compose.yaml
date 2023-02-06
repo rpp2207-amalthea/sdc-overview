@@ -2,18 +2,46 @@ version: '4.16.2'
 services:
   sdc-overview:
     build: .
-    container_name: sdc_overview_c
+    container_name: sdc_api_c
     ports:
       - '8080:8080'
     volumes:
-      - ../sdc_overview:/sdc-overview
-      - /sdc_overview/node_modules
+      - .:/sdc-api_c
+      - /Users/tivo/Hack Reactor/sdc-overview/node_modules
   db:
-    image: postgres
+    image: postgres:15
     restart: always
+    container_name: sdc_db_c
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres-0
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: product_overview
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - /Users/tivo/Hack Reactor/sdc-data:/var/lib/postgresql/sdc-data
+
+
+# version: "4.16.2"
+
+# services:
+#   sdc-api:
+#     build: .
+#     container_name: sdc-api_c
+#     ports:
+#       - '8080:8080'
+#     volumes:
+#       - .:/sdc-api
+#       - /Users/seanmcdaniel/hack-reactor-rpp2207/sdc-reviews/reviews/node_modules
+#   db:
+#     image: postgres:alpine
+#     restart: always
+#     container_name: sdc-db_c
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: 'password'
+#       POSTGRES_DB: reviews
+#     ports:
+#       - '5432:5432'
+#     volumes:
+#       - ./db/schema.sql:/docker-entrypoint-initdb.d/create_tables.sql
+#       - /Users/seanmcdaniel/hack-reactor-rpp2207/sdc-data:/var/lib/postgresql/sdc-data
