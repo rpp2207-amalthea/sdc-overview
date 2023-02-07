@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS products (
   id INT,
   name VARCHAR(50),
-  slogan VARCHAR(100),
+  slogan VARCHAR(200),
   description VARCHAR(500),
   category VARCHAR(50),
   default_price VARCHAR(10),
