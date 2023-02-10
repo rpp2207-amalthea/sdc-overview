@@ -12,8 +12,8 @@ const { Pool } = require('pg');
 // });
 
 const pool = new Pool({
-  "host": '127.0.0.1',
-  "user": 'postgres',
+  "host": '52.13.1.87',
+  "user": 'tivothis',
   "database": 'product_overview',
   "password": 'password',
   "port": 5432,
