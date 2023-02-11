@@ -13,9 +13,9 @@ services:
     restart: always
     container_name: sdc_db_c
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USER: tivothis
       POSTGRES_PASSWORD: 'password'
       POSTGRES_DB: product_overview
     volumes:
       - ./db/schema.sql:/docker-entrypoint-initdb.d/create_tables.sql
-      - /Users/tivo/Hack Reactor/sdc-data:/var/lib/postgresql/sdc-data
+      # - /Users/tivo/Hack Reactor/sdc-data:/var/lib/postgresql/sdc-data
