@@ -12,7 +12,7 @@ const { Pool } = require('pg');
 // });
 
 const pool = new Pool({
-  "host": '35.85.52.244',
+  "host": 'ec2-35-85-52-244.us-west-2.compute.amazonaws.com',
   "user": 'tivothis',
   "database": 'product_overview',
   "password": 'password',
