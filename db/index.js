@@ -1,11 +1,18 @@
 const { Client } = require('pg');
 
 const client = new Client({
-  host: '127.0.0.1',
-  user: 'tivo',
-  database: 'sdc',
-  password: '',
+  host: '35.85.52.244',
+  user: 'tivothis',
+  database: 'product_overview',
+  password: 'password',
   port: 5432,
+
+//  "host": '127.0.0.1',
+//  "user": 'tivo',
+//  "database": 'sdc',
+//  "password": '',
+//  "port": 5432
+
 });
 
 client.connect();
