@@ -24,8 +24,7 @@ app.use(compression())
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/ip/:id', express.static(__dirname + '/../client/dist'));
-// app.listen(3000, () => console.log('Our Server is listening on port 3000...'));
-
+let port = 3050;
 // ROUTES
 
 app.get('/', initGetData.redirectFromHome);
@@ -54,4 +53,4 @@ app.get('/getCartTest', initGetData.getCart);
 app.post('/postCartTest', postData.postAddToCart);
 app.delete('/deleteCartTest', deleteData.deleteCart);
 
-module.exports = app.listen(8080, () => console.log('Our server is listening on port 8080...'))
+module.exports = app.listen(port, () => console.log(`Our server is listening on port ${port}...`))
