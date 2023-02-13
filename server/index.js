@@ -13,6 +13,7 @@ const postData = require('./controllers/postData.js');
 //for image uploads
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' });
+const fs = require('fs');
 
 const deleteData = require('./controllers/deleteData.js');
 const compression = require('compression');
