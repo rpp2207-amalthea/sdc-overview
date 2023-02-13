@@ -27,6 +27,15 @@ app.use('/ip/:id', express.static(__dirname + '/../client/dist'));
 let port = 3050;
 // ROUTES
 
+app.get('/loaderio-44c2dd1bd8cb4ebf5054e6834a73fa58', (req, res) => {
+  fs.readFile('loaderio.txt', 'utf8', (err, data) => {
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.status(200).send(data);
+    }
+  })
+})
 app.get('/', initGetData.redirectFromHome);
 
 app.get('/ipCurrent', initGetData.getCurrentProductCardControl);
