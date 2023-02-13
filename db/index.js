@@ -1,7 +1,7 @@
 const { Client } = require('pg');
 
 const client = new Client({
-  host: '35.85.52.244',
+  host: 'ec2-35-85-52-244.us-west-2.compute.amazonaws.com',
   user: 'tivothis',
   database: 'product_overview',
   password: 'password',
