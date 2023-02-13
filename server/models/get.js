@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+require('dotenv').config();
 
 // const pool = new Pool({
 //     "host": '127.0.0.1',
@@ -12,15 +13,15 @@ const { Pool } = require('pg');
 // });
 
 const pool = new Pool({
-    "host": 'ec2-35-85-52-244.us-west-2.compute.amazonaws.com',
-    "user": 'tivothis',
-    "database": 'product_overview',
-    "password": 'password',
+    "host": process.env.DB_HOST,
+    "user": process.env.DB_USERNAME,
+    "database": process.env.DB_DATABASE,
+    "password": process.env.DB_PASSWORD,
     "port": 5432,
     "max": 1000,
     "connectionTimeoutMillis": 10000,
     "idleTimeoutMillis": 10000
-});
+  });
 
 pool.on('error', (err, client) => {
     console.error('Unexpected error on idle client', err)

@@ -1,10 +1,10 @@
 const { Client } = require('pg');
 
 const client = new Client({
-  host: 'ec2-35-85-52-244.us-west-2.compute.amazonaws.com',
-  user: 'tivothis',
-  database: 'product_overview',
-  password: 'password',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
   port: 5432,
 
 //  "host": '127.0.0.1',
