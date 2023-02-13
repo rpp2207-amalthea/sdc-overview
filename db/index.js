@@ -12,7 +12,6 @@ const client = new Client({
 //  "database": 'sdc',
 //  "password": '',
 //  "port": 5432
-
 });
 
 client.connect();
