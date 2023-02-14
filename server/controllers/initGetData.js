@@ -3,6 +3,7 @@ const models = require('../models/get.js');
 const modelPost = require('../models/post.js');
 const cookieParser = require('cookie-parser');
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
 
 exports.redirectFromHome = (req, res) => {
 
@@ -115,4 +116,14 @@ exports.getCart = (req, res) => {
     })
   }
 
+}
+
+exports.getLoaderio = (req, res) => {
+    fs.readFile('loaderio.txt', 'utf8', (err, data) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.status(200).send(data);
+      }
+    })
 }

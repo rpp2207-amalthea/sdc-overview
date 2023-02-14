@@ -13,7 +13,7 @@ const postData = require('./controllers/postData.js');
 //for image uploads
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' });
-const fs = require('fs');
+
 
 const deleteData = require('./controllers/deleteData.js');
 const compression = require('compression');
@@ -28,15 +28,9 @@ app.use('/ip/:id', express.static(__dirname + '/../client/dist'));
 let port = 3050;
 // ROUTES
 
-app.get('/loaderio-44c2dd1bd8cb4ebf5054e6834a73fa58', (req, res) => {
-  fs.readFile('loaderio.txt', 'utf8', (err, data) => {
-    if (err) {
-      res.sendStatus(500);
-    } else {
-      res.status(200).send(data);
-    }
-  })
-})
+//loader.io verification route
+app.get('/loaderio-44c2dd1bd8cb4ebf5054e6834a73fa58', initGetData.getLoaderio);
+
 app.get('/', initGetData.redirectFromHome);
 
 app.get('/ipCurrent', initGetData.getCurrentProductCardControl);
