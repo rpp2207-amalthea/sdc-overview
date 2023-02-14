@@ -4,3 +4,4 @@ client/dist/bundle.js
 .DS_Store
 coverage/
 data
+loaderio.txt
