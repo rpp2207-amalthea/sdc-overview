@@ -5,3 +5,4 @@ client/dist/bundle.js
 coverage/
 data
 loaderio.txt
+newrelic.js

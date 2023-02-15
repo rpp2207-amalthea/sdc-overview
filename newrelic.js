@@ -27,6 +27,7 @@ exports.config = {
   * will be captured for all traces, unless otherwise specified in a destination's
   * attributes include/exclude lists.
   */
+  NEW_RELIC_ENABLED: false,
   allow_all_headers: true,
   attributes: {
     /**
@@ -51,3 +52,5 @@ exports.config = {
     ]
   }
 }
+
+// arn:aws:iam::199914981465:role/NewRelicInfrastructure-Integrations
