@@ -1,32 +1,5 @@
-const { Pool } = require('pg');
+const db = require('../../db/index.js');
 require('dotenv').config();
-
-// const pool = new Pool({
-//     "host": '127.0.0.1',
-//     "user": 'tivo',
-//     "database": 'sdc',
-//     "password": '',
-//     "port": 5432,
-//     "max": 1000,
-//     "connectionTimeoutMillis": 10000,
-//     "idleTimeoutMillis": 10000
-// });
-
-const pool = new Pool({
-  "host": process.env.DB_HOST,
-  "user": process.env.DB_USERNAME,
-  "database": process.env.DB_DATABASE,
-  "password": process.env.DB_PASSWORD,
-  "port": 5432,
-  "max": 1000,
-  "connectionTimeoutMillis": 10000,
-  "idleTimeoutMillis": 10000
-});
-
-pool.on('error', (err, client) => {
-    console.error('Unexpected error on idle client', err)
-    process.exit(-1)
-});
 
 module.exports = {
 
@@ -39,7 +12,7 @@ module.exports = {
       values: [user_session]
     }
 
-    await pool.query(insertSessionQuery)
+    await db.query(insertSessionQuery)
       .then((results) => {
         // console.log('session insert result: ', results);
         callback(null, results);
@@ -58,7 +31,7 @@ module.exports = {
       values: [cart.session_id, Number(cart.sku_id)]
     }
 
-    await pool.query(insertCartQuery)
+    await db.query(insertCartQuery)
       .then(result => {
         callback(null, result.rowCount);
       })

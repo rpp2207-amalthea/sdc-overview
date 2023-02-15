@@ -1,30 +1,28 @@
-const { Client } = require('pg');
+const { Pool } = require('pg');
 
-const client = new Client({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: 5432,
+const pool = new Pool({
+  "host": process.env.DB_HOST,
+  "user": process.env.DB_USERNAME,
+  "database": process.env.DB_DATABASE,
+  "password": process.env.DB_PASSWORD,
+  "port": 5432
+  // "max": 100,
+  // "connectionTimeoutMillis": 10000,
+  // "idleTimeoutMillis": 10000
 
-//  "host": '127.0.0.1',
 //  "user": 'tivo',
 //  "database": 'sdc',
 //  "password": '',
 //  "port": 5432
 });
 
-client.connect();
 
-const execute = async (query) => {
-  try {
-    await client.query(query);
-    return true;
-  } catch (error) {
-    console.error(error.stack);
-    return false;
+module.exports = {
+  query: (text, params, callback) => {
+    return pool.query(text, params, callback)
   }
 }
+
 
 const products = `
   CREATE TABLE IF NOT EXISTS products (
@@ -108,55 +106,56 @@ CREATE TABLE IF NOT EXISTS testCart (
   );`;
 
 
-execute(products)
+pool.query(products)
   .then(result => {
     if (result) {
       // console.log('Products table created');
     }
-    return execute(features);
+    pool.query(features);
   })
   .then(result => {
     if (result) {
       // console.log('Features table created');
     }
-    return execute(styles);
+    pool.query(styles);
   })
   .then(result => {
     if (result) {
       // console.log('Styles table created');
     }
-    return execute(photos);
+    pool.query(photos);
   })
   .then(result => {
     if (result) {
       // console.log('Photos table created');
     }
-    return execute(skus);
+    pool.query(skus);
   })
   .then(result => {
     if (result) {
       // console.log('SKUS table created');
     }
-    return execute(related);
+    pool.query(related);
   })
   .then(result => {
     if (result) {
       // console.log('Related table created');
     }
-    return execute(cart);
+    pool.query(cart);
   })
   .then(result => {
     if(result) {
       // console.log('Cart table created');
     }
-    return execute(testCart);
+    pool.query(testCart);
     // client.end();
   })
   .then(result => {
     if(result) {
-      console.log('Test Cart Table created')
+      // console.log('Test Cart Table created')
+      console.log('Tables Created');
     }
-    client.end();
+    // pool.end();
   })
 
-  module.exports = { client, execute };
+  // module.exports = { client, execute };

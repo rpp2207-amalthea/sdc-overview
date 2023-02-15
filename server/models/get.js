@@ -1,32 +1,5 @@
-const { Pool } = require('pg');
+const db = require('../../db/index.js');
 require('dotenv').config();
-
-// const pool = new Pool({
-//     "host": '127.0.0.1',
-//     "user": 'tivo',
-//     "database": 'sdc',
-//     "password": '',
-//     "port": 5432,
-//     "max": 1000,
-//     "connectionTimeoutMillis": 10000,
-//     "idleTimeoutMillis": 10000
-// });
-
-const pool = new Pool({
-    "host": process.env.DB_HOST,
-    "user": process.env.DB_USERNAME,
-    "database": process.env.DB_DATABASE,
-    "password": process.env.DB_PASSWORD,
-    "port": 5432,
-    "max": 1000,
-    "connectionTimeoutMillis": 10000,
-    "idleTimeoutMillis": 10000
-  });
-
-pool.on('error', (err, client) => {
-    console.error('Unexpected error on idle client', err)
-    process.exit(-1)
-});
 
 module.exports = {
 
@@ -53,7 +26,7 @@ module.exports = {
             ) FROM products WHERE products.id = $1;`,
             values: [product_id]
         }
-        await pool.query(queryProduct)
+        await db.query(queryProduct)
             .then(result => {
                 productObj = result.rows[0].json_build_object;
                 productObj.features.forEach(feature => {
@@ -110,7 +83,7 @@ module.exports = {
         values: [product_id]
         }
 
-        await pool.query(styles)
+        await db.query(styles)
         .then((results) => {
             stylesObj = results.rows[0].styles;
         })
@@ -142,7 +115,7 @@ module.exports = {
             `,
             values: [current_product_id]
         }
-        pool.query(queryRelated)
+        db.query(queryRelated)
         .then(result => {
             // console.log('got related product id: ', result.rows[0]);
             let related_product_id = [result.rows[0].related_id];
@@ -162,7 +135,7 @@ module.exports = {
             values: [existing_session_id]
         }
 
-        await pool.query(queryCart)
+        await db.query(queryCart)
             .then(result => {
                 let itemCount = result.rows;
                 callback(null, itemCount);

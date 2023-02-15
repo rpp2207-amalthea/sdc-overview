@@ -14,6 +14,6 @@ export default () => {
     sku_id: 790
 }
 
-  http.post('http://localhost:8080/addToCart', cart)
+  http.post('http://localhost:3050/addToCart', cart)
   sleep(1);
 };
