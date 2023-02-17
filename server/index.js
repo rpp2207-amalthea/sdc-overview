@@ -29,7 +29,7 @@ let port = 3050;
 // ROUTES
 
 //loader.io verification route
-app.get('/loaderio-44c2dd1bd8cb4ebf5054e6834a73fa58', initGetData.getLoaderio);
+app.get('/loaderio-5a378f357ff11ee86fbece7f78afa8c6', initGetData.getLoaderio);
 
 app.get('/', initGetData.redirectFromHome);
 
