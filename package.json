@@ -7,7 +7,7 @@
     "test": "PORT=6666 nyc mocha ./__tests__/server-overview.test.js --exit",
     "coverage": "jest --coverage",
     "review-test": "mocha ReviewTest.test.js --require global-jsdom/register --require @babel/register",
-    "server-dev": "nodemon server/index.js",
+    "server-dev": "nodemon server/index.js && NODE_ENV=production node index.js",
     "react-dev": "npx webpack -w",
     "build": "nodemon server/index.js && npx webpack -w",
     "oldstart": "node server/index.js",
