@@ -37,7 +37,7 @@ module.exports = {
                 callback(null, productObj);
             })
             .catch(err => {
-                callback(err.stack, null);
+                callback(err, null);
             });
     },
 
@@ -101,7 +101,7 @@ module.exports = {
             callback(null, stylesObj);
         })
         .catch((err) => {
-            callback(err.stack, null);
+            callback(err, null);
         });
 
     },
@@ -122,7 +122,7 @@ module.exports = {
             callback(null, related_product_id)
         })
         .catch(err => {
-            callback(err.stack, null);
+            callback(err, null);
         });
     },
 
@@ -141,7 +141,7 @@ module.exports = {
                 callback(null, itemCount);
             })
             .catch(err => {
-                callback(err.stack, null);
+                callback(err, null);
             })
 
     }

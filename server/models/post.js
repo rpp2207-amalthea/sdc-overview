@@ -18,7 +18,7 @@ module.exports = {
         callback(null, results);
       })
       .catch(err => {
-        callback(err.stack, null);
+        callback(err, null);
       })
 
   },
@@ -36,7 +36,7 @@ module.exports = {
         callback(null, result.rowCount);
       })
       .catch(err => {
-        callback(err.stack, null);
+        callback(err, null);
       })
   }
 

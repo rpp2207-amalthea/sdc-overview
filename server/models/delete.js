@@ -13,7 +13,7 @@ module.exports = {
         callback(null, result);
       })
       .catch(err => {
-        callback(err.stack, null);
+        callback(err, null);
       })
   }
 }
