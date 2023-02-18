@@ -6,8 +6,8 @@ const pool = new Pool({
   "database": process.env.DB_DATABASE,
   "password": process.env.DB_PASSWORD,
   "port": 5432,
-  "connectionTimeoutMillis": 1000,
-  "idleTimeoutMillis": 1000
+  // "connectionTimeoutMillis": 1000,
+  // "idleTimeoutMillis": 1000
 
 //  "user": 'tivo',
 //  "database": 'sdc',
