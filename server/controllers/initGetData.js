@@ -1,9 +1,14 @@
-const axios = require('axios')
+const axios = require('axios');
+// const Redis = require('redis');
+// const redisClient = Redis.createClient() // for production, add {url: of production redis instance}
+// redisClient.connect();
 const models = require('../models/get.js');
 const modelPost = require('../models/post.js');
 const cookieParser = require('cookie-parser');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
+// const DEFAULT_EXPIRATION = 3600;
+
 
 exports.redirectFromHome = (req, res) => {
 
@@ -12,11 +17,35 @@ exports.redirectFromHome = (req, res) => {
 }
 
 
-exports.getCurrentProductCardControl = (req, res) => {
+
+exports.getCurrentProductCardControl = async (req, res) => {
 
   var incomingParamProductId = req.query.product_id;
   // console.log("🚀 ~ file: initGetData.js:17 ~ incomingParamProductId", incomingParamProductId)
-
+  // try {
+  //   console.log('trying')
+  //   await redisClient.get(`product_id=${incomingParamProductId}`, (error, product) => {
+  //     console.log("invoking redis GET method")
+  //     if (product) {
+  //       console.log("Cache HIT");
+  //       let cacheProduct = JSON.parse(product);
+  //       res.status(200).send(cacheProduct);
+  //     } else {
+  //       console.log("Cache MISS");
+  //       models.getProduct(incomingParamProductId, async (err, succ) => {
+  //         if (err) {
+  //           res.status(500).send(err);
+  //         } else {
+  //           console.log("got product from DB")
+  //           await redisClient.setex(`product_id=${incomingParamProductId}`, DEFAULT_EXPIRATION, JSON.stringify(succ));
+  //           res.status(200).send(succ);
+  //         }
+  //       })
+  //     }
+  //   })
+  // } catch (err) {
+  //   res.status(500).send(err);
+  // }
 
   //testing variable
   // var incomingParamProductId = req.body.id;
@@ -26,6 +55,8 @@ exports.getCurrentProductCardControl = (req, res) => {
       res.status(500).send(err);
     } else {
       // console.log('current product: ', succ);
+      // redisClient.set(`product_id=${incomingParamProductId}`, DEFAULT_EXPIRATION, JSON.stringify(succ));
+      // console.log('redis SET Cache')
       res.status(200).send(succ);
     }
   })

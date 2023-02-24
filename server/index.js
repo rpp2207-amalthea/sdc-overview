@@ -2,7 +2,7 @@
 
 require('dotenv').config();
 const express = require ("express");
-const axios = require ('axios')
+const axios = require ('axios');
 const app = express();
 const cookieParser = require('cookie-parser');
 const cors = require("cors");
@@ -29,7 +29,7 @@ let port = 3050;
 // ROUTES
 
 //loader.io verification route
-app.get('/loaderio-5a378f357ff11ee86fbece7f78afa8c6', initGetData.getLoaderio);
+app.get('/loaderio-9ff2cf656421e631434d71b63b39e15c', initGetData.getLoaderio);
 
 app.get('/', initGetData.redirectFromHome);
 
