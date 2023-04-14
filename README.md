@@ -108,7 +108,7 @@ My CPU usage was reduced to 7.9%
 INSERT queries are always going to be more performance heavy
 
 CPU Usage went up to 43% for INSERT Queries
-![alt](https://file.notion.so/f/s/1c88f46f-8655-4c6d-9775-f7b0fb9d5f11/Screen_Shot_2023-02-24_at_8.18.46_PM.png?id=b4311d78-18bf-416d-968f-f57b62beae7d&table=block&spaceId=2a363adf-b596-4270-823e-50a4b7bb0c67&expirationTimestamp=1681339879047&signature=Y8u6FRn5NRY91MftErlJW27eDMoH8OrzCMjDgIHtoxE&downloadName=Screen+Shot+2023-02-24+at+8.18.46+PM.png)
+![alt](https://file.notion.so/f/s/1c88f46f-8655-4c6d-9775-f7b0fb9d5f11/Screen_Shot_2023-02-24_at_8.18.46_PM.png?id=b4311d78-18bf-416d-968f-f57b62beae7d&table=block&spaceId=2a363adf-b596-4270-823e-50a4b7bb0c67&expirationTimestamp=1681526231942&signature=B6Un4xai7zewp1wc1iLF7xvklXn3s4P26TOn5En7--A&downloadName=Screen+Shot+2023-02-24+at+8.18.46+PM.png)
 
 ## Takeaways
 Load Balancing with Nginx and Caching are absolutely invaluable tools, I was able to recieve up to 5000 RPS with 0% Error-Rate and 79ms latency with limited EC2 hardware. After scaling my Nginx Instance Vertically to a T2 xLarge, I was able to recieve up to 10000 RPS with 0% Error-Rate and 147mx latency! Given more time, I would do more research on using Redis Caching to add an additional layer of caching and optimizing my INSERT queries. 
