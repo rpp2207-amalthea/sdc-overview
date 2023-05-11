@@ -5,7 +5,7 @@ This was an inherited code base with the following instructions: "The current ba
 
 This was a monolithic repo and we were task with refactoring it to a microservice archtecture. Below is the documentation of this process throughout in addition to production optimizations. This repo focuses on the Product Overview services alone. K6 was use for stress testing locally and loader.io and New Relic were used for stress testing in production. Nginx was used for load balancing and caching. However the config file is not available in this repo because it was created and configured directly in the AWS instance. This diagram below represents the final architecture. 
 
-![alt](https://file.notion.so/f/s/12194b86-0fd1-497d-952f-ea05dfec9fe9/Screenshot_2023-04-11_at_4.30.29_PM.png?id=617ea03f-74b2-4c42-819e-52edb9866c1f&table=block&spaceId=2a363adf-b596-4270-823e-50a4b7bb0c67&expirationTimestamp=1681338677761&signature=iE1rPGdmXkeUO6wB5-R4LyE_Kyn8TlLcBV2O6L3Fyn8&downloadName=Screenshot+2023-04-11+at+4.30.29+PM.png)
+![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683841301/Screenshot_2023-04-11_at_4.30.29_PM_wwybuw.png)
 
 ## 🤖 Highlights
 - Converted monolithic e-commerce repo to microservice-oriented architecture and deployed to AWS EC2 instances
