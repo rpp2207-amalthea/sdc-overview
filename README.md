@@ -20,12 +20,14 @@ This was a monolithic repo and we were task with refactoring it to a microservic
 ### GET Products - testing between product_id 800,000 - 1,000,011
 
 **1000 RPS**
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683841417/1000_rps_mtlrn8.png)
 Results: 0% error-rate, 997ms latency
 
 ### POST to Cart
 
 **1000 RPS**
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683841483/1000_rps_post_pe3mlx.png)
 Results: 0.0% error-rate, 559ms latency
 
@@ -33,7 +35,9 @@ Results: 0.0% error-rate, 559ms latency
 ### GET Products - testing between product_id 800,000 - 1,000,011
 
 **1000 RPS**
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683841564/1000_rps_get_after_yobyms.png)
+
 Previous Results : 0.0% error-rate, 997ms latency
 New Results: 0.5% error-rate, 121ms latency
 
@@ -62,6 +66,7 @@ upstream backendserver {
 ### GET Products - testing between product_id 800,000 - 1,000,011
 
 **1000 RPS**
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683841634/1000_rps_keep_alives_dql7cf.png)
 Before keep alives: 0.5% error-rate and 121ms latency
 New Results: 0% error-rate and 89ms latency, 0 timeouts
@@ -71,6 +76,7 @@ New Results: 0% error-rate and 89ms latency, 0 timeouts
 **switching between 3 session_ids and skus**
 
 **1000 RPS - after load balancer, caching and keep alives configured**
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683841707/1000_rps_post_cart_m1bfeq.png)
 Previous Results: 0% error-rate, 559ms latency
 New Results: 0% error rate, 67ms latency
@@ -79,12 +85,16 @@ New Results: 0% error rate, 67ms latency
 After configuring my keep alives, I decided to push my RPS to the limit. I decided to test my GET Products route testing product_ids randomly between 800K to 1 million. 
 
 **5000RPS**
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683841758/5000_rps_uxrtat.png)
 Results: 0% error - rate, 79ms latency
 
 I pushed up to 8000 RPS and reached a 4.1% error-rate, 126ms latency, and 19850 requests with a 500 Status Error. Adding a 5th API Instance did not show any improvement. 
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683841806/8000_rps_cy47al.png)
+
 Checking my CPU usage of my Nginx Server showed that my CPU usage was pushed to 68%.
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683841987/cpu_screenshot1_fljf3x.png)
 
 As an experiment, I decided to scale my Nginx vertically to see if I could push my stress testing
@@ -92,24 +102,32 @@ As an experiment, I decided to scale my Nginx vertically to see if I could push 
 ### T2 xlarge - 4 CPUs and 16 GB RAM
 
 **8000 RPS**
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683841933/8000_rps_tc2large_w4unll.png)
+
 Previous Result: 4.1% error-rate, 129ms latency, 19850 requests with 500 Status Error.
 New Result: 0% error-rate, 110ms latency
 
 **10000 RPS**
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683842042/10000rps_xoz2z7.png)
+
 Result: 0% error-rate, 147ms latency
 
 My CPU usage was reduced to 7.9%
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683842090/cpu_screenshot2_xvxitu.png)
 
 ## POST to Cart
 
 **3500 RPS - alternated between 3 session_ids and skus**
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683842136/3000_post_rps_aeabdd.png)
+
 INSERT queries are always going to be more performance heavy
 
 CPU Usage went up to 43% for INSERT Queries
+
 ![alt](https://res.cloudinary.com/djfpzruso/image/upload/c_scale,w_800/v1683842187/cpu_screenshot3_hcdyli.png)
 
 ## Takeaways
